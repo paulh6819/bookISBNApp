@@ -1,7 +1,12 @@
 import express from "express";
 import axios from "axios";
+import multer from "multer";
 
 const baseURL = "https://www.googleapis.com";
+
+const baseBooksRunURL = "https://booksrun.com/api/price/sell/";
+
+const booksRunApiKey = "p83zv395qxgyr2mj7xsn";
 
 const apiKEY = "AIzaSyDklC7lbmUzVOIMCUMEhbas-WTu5AYG94c";
 
@@ -18,7 +23,8 @@ const port = 4006;
 app.get("/", async (req, res) => {
   try {
     const { data } = await axios.get(
-      `${baseURL}/books/v1/volumes?q=intitle:the+great+gatsby&key=${apiKEY}`
+      `${baseURL}/books/v1/volumes?q=intitle:"Pharmacology+in+Nursing+Fourteenth+Edition"&key=${apiKEY}`,
+      `${baseBooksRunURL}{9781595829788}?key=${booksRunApiKey}`
     );
 
     console.log(data.items);
