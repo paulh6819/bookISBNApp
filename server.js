@@ -1,6 +1,25 @@
 import express from "express";
 import axios from "axios";
 import multer from "multer";
+import { ImageAnnotatorClient } from "@google-cloud/vision";
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+dotenv.config();
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+const credentials = {
+  client_email: process.env.CLIENT_EMAIL,
+  private_key: process.env.PRIVATE_KEY,
+};
+
+const client = new ImageAnnotatorClient({ credentials });
 
 const baseURL = "https://www.googleapis.com";
 
@@ -56,6 +75,39 @@ app.get("/", async (req, res) => {
   } catch (error) {
     console.error("error fetching data", error);
     res.status(500).send("internal server error");
+  }
+});
+
+app.post("/detectLabels", upload.single("image"), async (req, res) => {
+  if (!req.file) {
+    console.log("No image provided.");
+    return res.status(400).send("No image uploaded.");
+  }
+  console.log("Image received. Proceeding with label detection.");
+  try {
+    // Path to the photo at the root
+
+    const filePath = path.join(__dirname, "test_photo.jpg");
+
+    const [result] = await client.labelDetection(filePath);
+
+    if (result && result.labelAnnotations) {
+      const labels = result.labelAnnotations;
+      console.log(
+        `Labels detected: ${labels
+          .map((label) => label.description)
+          .join(", ")}`
+      );
+      res.json(labels.map((label) => label.description));
+    } else {
+      console.log("No labels detected or response format unexpected.");
+      res
+        .status(400)
+        .send("Could not detect labels or response format was unexpected.");
+    }
+  } catch (error) {
+    console.error("Error detecting labels  - damn:", error);
+    res.status(500).send("Error detecting labels.");
   }
 });
 
