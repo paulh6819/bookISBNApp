@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Detector</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="App">
+        <nav>
+            <ul class="menu">
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                <li>
+                    <a href="/about">About</a>
+                </li>
+                <li>
+                    <a href="/contact">Contact</a>
+                </li>
+            </ul>
+        </nav>
+        <h1>What car are you looking at?</h1>
+        <div class="center-container">
+            <div 
+                class="drop-area" 
+                ondrop="handleDrop(event)" 
+                ondragover="handleDragOver(event)">
+                <div class="animation-container">
+                    <div class="car"></div>
+                    <div class="arrow"></div>
+                </div>
+                <div class="image-preview" id="imagePreview">
+                    <img id="droppedImage" alt="Dropped">
+                    <p id="imageMessage">Sorry can't recognize this as a car!</p>
+                </div>
+                <p>Drag and drop a photo here</p>
+                <label class="upload-button" for="file-upload">
+                    Or click here to upload
+                </label>
+                <input 
+                    id="file-upload" 
+                    type="file" 
+                    onchange="handleFileSelect(event)">
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

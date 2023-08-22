@@ -19,7 +19,9 @@ const credentials = {
   private_key: process.env.PRIVATE_KEY,
 };
 
-const client = new ImageAnnotatorClient({ credentials });
+const client = new ImageAnnotatorClient({
+  keyFilename: "./credentials.json",
+});
 
 const baseURL = "https://www.googleapis.com";
 
@@ -40,37 +42,45 @@ const port = 4006;
 app.get("/", async (req, res) => {
   try {
     const googleData = await axios.get(
-      `${baseURL}/books/v1/volumes?q=intitle:"If on a winter's night a traveler"&key=${apiKEY}`
+      `${baseURL}/books/v1/volumes?q=intitle:"CRANK"&key=${apiKEY}`
     );
 
     // Then, we extract the ISBN_13 as before
-    let isbn13 = null;
-    if (
-      googleData.data.items &&
-      googleData.data.items[0] &&
-      googleData.data.items[0].volumeInfo &&
-      googleData.data.items[0].volumeInfo.industryIdentifiers
-    ) {
-      for (const identifier of googleData.data.items[0].volumeInfo
-        .industryIdentifiers) {
-        if (identifier.type === "ISBN_13") {
-          isbn13 = identifier.identifier;
-          break;
+    let isbn13List = [];
+
+    if (googleData.data.items) {
+      for (const item of googleData.data.items) {
+        if (item.volumeInfo && item.volumeInfo.industryIdentifiers) {
+          for (const identifier of item.volumeInfo.industryIdentifiers) {
+            if (identifier.type === "ISBN_13") {
+              isbn13List.push(identifier.identifier);
+              break;
+            }
+          }
         }
       }
     }
 
-    let booksrunData = null;
+    console.log(isbn13List);
+    let booksrunDataList = [];
 
-    if (isbn13) {
-      booksrunData = await axios.get(
+    for (const isbn13 of isbn13List) {
+      const booksrunData = await axios.get(
         `${baseBooksRunURL}${isbn13}?key=${booksRunApiKey}`
       );
+
+      booksrunDataList.push(booksrunData.data);
     }
 
+    // if (isbn13) {
+    //   booksrunData = await axios.get(
+    //     `${baseBooksRunURL}${isbn13}?key=${booksRunApiKey}`
+    //   );
+    // }
+
     res.json({
-      googleData: isbn13, // Changed this line
-      booksRunData: booksrunData ? booksrunData.data : null,
+      googleData: isbn13List, // Changed this line
+      booksRunData: booksrunDataList,
     });
   } catch (error) {
     console.error("error fetching data", error);
@@ -87,23 +97,18 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
   try {
     // Path to the photo at the root
 
-    const filePath = path.join(__dirname, "test_photo.jpg");
+    const filePath = path.join(__dirname, "test_photoa.JPG");
 
-    const [result] = await client.labelDetection(filePath);
-
-    if (result && result.labelAnnotations) {
-      const labels = result.labelAnnotations;
-      console.log(
-        `Labels detected: ${labels
-          .map((label) => label.description)
-          .join(", ")}`
-      );
-      res.json(labels.map((label) => label.description));
+    const [result] = await client.textDetection(filePath);
+    if (result && result.textAnnotations) {
+      const texts = result.textAnnotations;
+      console.log(`Text detected: ${texts[0].description}`);
+      res.json(texts[0].description); // sending only the full detected text
     } else {
-      console.log("No labels detected or response format unexpected.");
+      console.log("No text detected or response format unexpected.");
       res
         .status(400)
-        .send("Could not detect labels or response format was unexpected.");
+        .send("Could not detect text or response format was unexpected.");
     }
   } catch (error) {
     console.error("Error detecting labels  - damn:", error);
