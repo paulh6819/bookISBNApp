@@ -27,9 +27,10 @@ const baseURL = "https://www.googleapis.com";
 
 const baseBooksRunURL = "https://booksrun.com/api/price/sell/";
 
+//sometimes this key will randomly expire. must be cognizant of the issue, and think of a solution.
 const booksRunApiKey = "p83zv395qxgyr2mj7xsn";
 
-const apiKEY = "AIzaSyDklC7lbmUzVOIMCUMEhbas-WTu5AYG94c";
+const apiKEY = "AIzaSyBrhum9eqZYgjZkuL4CDeqGkfDLmcEYUEI";
 
 const app = express();
 
@@ -41,10 +42,10 @@ const port = 4006;
 
 //fetch(url: URL | RequestInfo, init?: RequestInit): Promise<Response>;
 
-app.get("/", async (req, res) => {
+app.get("/fetchbooks", async (req, res) => {
   try {
     const googleData = await axios.get(
-      `${baseURL}/books/v1/volumes?q=intitle:"HARRY POTTER"&key=${apiKEY}`
+      `${baseURL}/books/v1/volumes?q=intitle:"The Tipping Point"&key=${apiKEY}`
     );
 
     // Then, we extract the ISBN_13 as befores
@@ -98,12 +99,57 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
   console.log("Image received. Proceeding with label detection.");
   try {
     // Path to the photo at the root
-
     const buffer = req.file.buffer;
-
     const [result] = await client.textDetection(buffer);
     if (result && result.textAnnotations) {
       const texts = result.textAnnotations;
+      const textDetection = result.textAnnotations[0].description;
+      const lines = textDetection.split("\n");
+      let potentialISBNs = [];
+      for (const line of lines) {
+        console.log(`processing line ----->${line}`);
+        try {
+          const googleBooksResponse = await axios.get(
+            `${baseURL}/books/v1/volumes?q=intitle:"${encodeURIComponent(
+              line
+            )}"&key=${apiKEY}`
+          );
+          if (
+            googleBooksResponse.data.items &&
+            googleBooksResponse.data.items.length > 0
+          ) {
+            const volumeInfo = googleBooksResponse.data.items[0].volumeInfo;
+            if (volumeInfo && volumeInfo.industryIdentifiers) {
+              for (const identifier of volumeInfo.industryIdentifiers) {
+                if (identifier.type === "ISBN_13") {
+                  potentialISBNs.push(identifier.identifier);
+                  console.log(identifier.identifier);
+                  break; // Break out of the loop once you find the ISBN_13 for this book
+                }
+              }
+            }
+          }
+        } catch (error) {
+          console.error(`Error processing line "${line}":`, error.message);
+        }
+      }
+      // I need this to give me every ISBN though so i can feed them all to booksrun
+      //   if (
+      //     googleBooksResponse.data.items &&
+      //     googleBooksResponse.data.items.length > 0
+      //   ) {
+      //     const volumeInfo = googleBooksResponse.data.items[0].volumeInfo;
+      //     if (volumeInfo && volumeInfo.industryIdentifiers) {
+      //       for (const identifier of volumeInfo.industryIdentifiers) {
+      //         if (identifier.type === "ISBN_13") {
+      //           // or "ISBN_10" if you prefer
+      //           potentialISBNs.push(identifier.identifier);
+      //           break; // Break out of the loop once you find the ISBN_13 for this book
+      //         }
+      //       }
+      //     }
+      //   }
+
       console.log(`Text detected: ${texts[0].description}`);
       res.json({ text: texts[0].description }); // sending only the full detected text
     } else {
