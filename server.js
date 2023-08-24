@@ -33,6 +33,8 @@ const apiKEY = "AIzaSyDklC7lbmUzVOIMCUMEhbas-WTu5AYG94c";
 
 const app = express();
 
+app.use(express.static(path.join(__dirname, "public")));
+
 const port = 4006;
 
 //const apiGoogleBooksKey = AIzaSyDklC7lbmUzVOIMCUMEhbas-WTu5AYG94c
@@ -42,10 +44,10 @@ const port = 4006;
 app.get("/", async (req, res) => {
   try {
     const googleData = await axios.get(
-      `${baseURL}/books/v1/volumes?q=intitle:"CRANK"&key=${apiKEY}`
+      `${baseURL}/books/v1/volumes?q=intitle:"HARRY POTTER"&key=${apiKEY}`
     );
 
-    // Then, we extract the ISBN_13 as before
+    // Then, we extract the ISBN_13 as befores
     let isbn13List = [];
 
     if (googleData.data.items) {
@@ -97,13 +99,13 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
   try {
     // Path to the photo at the root
 
-    const filePath = path.join(__dirname, "test_photoa.JPG");
+    const buffer = req.file.buffer;
 
-    const [result] = await client.textDetection(filePath);
+    const [result] = await client.textDetection(buffer);
     if (result && result.textAnnotations) {
       const texts = result.textAnnotations;
       console.log(`Text detected: ${texts[0].description}`);
-      res.json(texts[0].description); // sending only the full detected text
+      res.json({ text: texts[0].description }); // sending only the full detected text
     } else {
       console.log("No text detected or response format unexpected.");
       res
