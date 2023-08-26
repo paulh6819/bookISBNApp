@@ -45,7 +45,7 @@ const port = 4006;
 app.get("/fetchbooks", async (req, res) => {
   try {
     const googleData = await axios.get(
-      `${baseURL}/books/v1/volumes?q=intitle:"The Tipping Point"&key=${apiKEY}`
+      `${baseURL}/books/v1/volumes?q=intitle:"CRANK"&key=${apiKEY}`
     );
 
     // Then, we extract the ISBN_13 as befores
@@ -64,16 +64,16 @@ app.get("/fetchbooks", async (req, res) => {
       }
     }
 
-    console.log(isbn13List);
-    let booksrunDataList = [];
+    // console.log(isbn13List);
+    // let booksrunDataList = [];
 
-    for (const isbn13 of isbn13List) {
-      const booksrunData = await axios.get(
-        `${baseBooksRunURL}${isbn13}?key=${booksRunApiKey}`
-      );
+    // for (const isbn13 of isbn13List) {
+    //   const booksrunData = await axios.get(
+    //     `${baseBooksRunURL}${isbn13}?key=${booksRunApiKey}`
+    //   );
 
-      booksrunDataList.push(booksrunData.data);
-    }
+    //   booksrunDataList.push(booksrunData.data);
+    // }
 
     // if (isbn13) {
     //   booksrunData = await axios.get(
@@ -106,6 +106,8 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
       const textDetection = result.textAnnotations[0].description;
       const lines = textDetection.split("\n");
       let potentialISBNs = [];
+      let booksrunDataList = [];
+
       for (const line of lines) {
         console.log(`processing line ----->${line}`);
         try {
@@ -114,25 +116,53 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
               line
             )}"&key=${apiKEY}`
           );
+
           if (
             googleBooksResponse.data.items &&
             googleBooksResponse.data.items.length > 0
           ) {
-            const volumeInfo = googleBooksResponse.data.items[0].volumeInfo;
-            if (volumeInfo && volumeInfo.industryIdentifiers) {
-              for (const identifier of volumeInfo.industryIdentifiers) {
-                if (identifier.type === "ISBN_13") {
-                  potentialISBNs.push(identifier.identifier);
-                  console.log(identifier.identifier);
-                  break; // Break out of the loop once you find the ISBN_13 for this book
+            for (const item of googleBooksResponse.data.items) {
+              const volumeInfo = item.volumeInfo;
+              if (volumeInfo && volumeInfo.industryIdentifiers) {
+                for (const identifier of volumeInfo.industryIdentifiers) {
+                  if (identifier.type === "ISBN_13") {
+                    console.log(identifier.type);
+                    potentialISBNs.push(identifier.identifier);
+                    console.log(identifier.identifier);
+                    //break; // Break out of the loop once you find the ISBN_13 for this book
+                  }
                 }
               }
             }
           }
+          for (const isbn of potentialISBNs) {
+            try {
+              const booksrunData = await axios.get(
+                `${baseBooksRunURL}${isbn}?key=${booksRunApiKey}`
+              );
+              booksrunDataList.push(booksrunData.data);
+            } catch (error) {
+              console.error(`Error processing line "${line}":`, error.message);
+            }
+          }
+          console.log(booksrunDataList);
+          let prices = [];
+
+          for (const data of booksrunDataList) {
+            if (data.result.status === "success") {
+              // Make sure it's "success" not "sucess"
+              console.log("Text Object:", data.result.text); // Let's see the structure of the text object
+              prices.push(data.result.text); // This will push the whole object for now
+            }
+          }
+
+          console.log(`this is the prices array`, prices);
+          console.log(`this is the prices array ${prices}`);
         } catch (error) {
           console.error(`Error processing line "${line}":`, error.message);
         }
       }
+
       // I need this to give me every ISBN though so i can feed them all to booksrun
       //   if (
       //     googleBooksResponse.data.items &&
