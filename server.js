@@ -105,10 +105,22 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
       const texts = result.textAnnotations;
       const textDetection = result.textAnnotations[0].description;
       const lines = textDetection.split("\n");
-      let potentialISBNs = [];
-      let booksrunDataList = [];
 
-      for (const line of lines) {
+      const linesLessThanFour = [];
+
+      for (let line of lines) {
+        if (line.trim().length > 4) {
+          linesLessThanFour.push(line);
+        }
+      }
+
+      //   console.log(lines);
+      //   console.log(linesLessThanFour);
+
+      for (const line of linesLessThanFour) {
+        let isbToPriceMap = {};
+        let potentialISBNs = [];
+        let booksrunDataList = [];
         console.log(`processing line ----->${line}`);
         try {
           const googleBooksResponse = await axios.get(
@@ -126,41 +138,48 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
               if (volumeInfo && volumeInfo.industryIdentifiers) {
                 for (const identifier of volumeInfo.industryIdentifiers) {
                   if (identifier.type === "ISBN_13") {
-                    console.log(identifier.type);
                     potentialISBNs.push(identifier.identifier);
-                    console.log(identifier.identifier);
+
                     //break; // Break out of the loop once you find the ISBN_13 for this book
                   }
                 }
               }
             }
           }
+          console.log(
+            `these are the potentail ISBNS for one book ${potentialISBNs}`
+          );
           for (const isbn of potentialISBNs) {
             try {
               const booksrunData = await axios.get(
                 `${baseBooksRunURL}${isbn}?key=${booksRunApiKey}`
               );
               booksrunDataList.push(booksrunData.data);
+              if (booksrunData.data.result.status === "success") {
+                isbToPriceMap[isbn] = booksrunData.data.result.text;
+              }
             } catch (error) {
               console.error(`Error processing line "${line}":`, error.message);
             }
           }
-          console.log(booksrunDataList);
+          //   console.log(booksrunDataList);
+
           let prices = [];
 
           for (const data of booksrunDataList) {
             if (data.result.status === "success") {
               // Make sure it's "success" not "sucess"
-              console.log("Text Object:", data.result.text); // Let's see the structure of the text object
+              //console.log("Text Object:", data.result.text); // Let's see the structure of the text object
               prices.push(data.result.text); // This will push the whole object for now
             }
           }
 
-          console.log(`this is the prices array`, prices);
-          console.log(`this is the prices array ${prices}`);
+          //   console.log(`this is the prices array`, prices);
+          console.log("this is the prices array", prices);
         } catch (error) {
           console.error(`Error processing line "${line}":`, error.message);
         }
+        console.log("Final state of isbnToPriceMap:", isbToPriceMap);
       }
 
       // I need this to give me every ISBN though so i can feed them all to booksrun
