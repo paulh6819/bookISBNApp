@@ -37,7 +37,7 @@ const baseBooksRunURL = "https://booksrun.com/api/price/sell/";
 //sometimes this key will randomly expire. must be cognizant of the issue, and think of a solution.
 const booksRunApiKey = "p83zv395qxgyr2mj7xsn";
 
-const apiKEY = "AIzaSyBrhum9eqZYgjZkuL4CDeqGkfDLmcEYUEI";
+const apiKEYGoogleBooks = "AIzaSyC0VxffVwhh-iT2mTauuIoFoIwMgx20hUU";
 
 const app = express();
 
@@ -108,7 +108,7 @@ async function getBooksFromChatGPT(ocrText) {
         role: "user",
         content: `Please parse the following text from googles OCR of an image of books. I need the likely book titles in json format. You are
         an API and your response is going to another API so you must be very exact about the format that you return the json string. Return
-        this exact format -    {
+        this exact format - which means excluding ANY explanatory text, I repeat, no text other than the formatted books in JSON! -    {
           "title": “EXAMPLE BOOK TITLE”,
           "subtitle": “example subtitle”
         },
@@ -127,6 +127,8 @@ async function getBooksFromChatGPT(ocrText) {
   }
   return responseContent;
 }
+
+//This is my main function right now.
 
 app.post("/detectLabels", upload.single("image"), async (req, res) => {
   if (!req.file) {
@@ -149,20 +151,122 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
     // chatGPT's parsing response
     const chatGPTResponse = await getBooksFromChatGPT(textBackFromGoolgesOCR);
 
-    let parsedGPTresponse = JSON.parse(chatGPTResponse);
+    console.log(chatGPTResponse);
 
-    //testing getting the titles
+    let parsedGPTresponse;
+
+    try {
+      parsedGPTresponse = JSON.parse(chatGPTResponse);
+    } catch (error) {
+      console.error("this piece of shit parser for GPT isnt working", error);
+      res.status(500).send("error processing line");
+      return;
+    }
+
+    //This brings back all the data from googles book API
     for (let bookOBJ of parsedGPTresponse) {
       if (bookOBJ.title) {
-        console.log(`This is a returned title: ${bookOBJ.title} `);
+        console.log(`This is a returned title from chatGPT: ${bookOBJ.title} `);
+      }
+
+      const constructedURL = `${baseURL}/books/v1/volumes?q=intitle:"${encodeURIComponent(
+        bookOBJ.title
+      )}"&key=${apiKEYGoogleBooks}`;
+      console.log("Constructed URL:", constructedURL);
+
+      let firstISBN;
+
+      const isbnsFromGoogleBooks = [];
+
+      try {
+        //this is what's bringing back the actul data from googles book API
+        const googleBooksResponse = await axios.get(constructedURL);
+        //
+
+        if (
+          googleBooksResponse.data.items &&
+          googleBooksResponse.data.items.length > 0
+        ) {
+          googleBooksResponse.data.items.forEach((item) => {
+            if (
+              item.volumeInfo.industryIdentifiers &&
+              item.volumeInfo.industryIdentifiers.length > 0
+            ) {
+              item.volumeInfo.industryIdentifiers.forEach((identifier) => {
+                isbnsFromGoogleBooks.push(identifier.identifier);
+              });
+            }
+          });
+        }
+      } catch (error) {
+        console.error(
+          "Error fetching from Google Books API:",
+          error.response.data
+        );
+      }
+      console.log("this is the array of isbns", isbnsFromGoogleBooks);
+      //This is the array where I am storing the price obeject and isbns returned from books run
+      let booksrunPrices = [];
+
+      //Now I am sending the first ISBN to  books run
+      try {
+        for (let isbn of isbnsFromGoogleBooks) {
+          const booksrunResponse = await axios.get(
+            `${baseBooksRunURL}${isbn}?key=${booksRunApiKey}`
+          );
+          booksrunPrices.push([isbn, booksrunResponse.data.result.text]);
+          console.log(
+            "this is the object coming back from books run for ISBN",
+            isbn,
+            booksrunResponse.data.result
+          );
+        }
+        console.log(
+          "this is the array of prices from books run",
+          booksrunPrices
+        );
+        //
+      } catch (error) {
+        console.error(
+          "error getting book respnse from booksRUn",
+          error.response.data
+        );
       }
     }
-    //
 
     console.log(parsedGPTresponse);
 
-    console.log(chatGPTResponse);
     console.log(textBackFromGoolgesOCR);
+
+    //attempting to access googles book api
+
+    // for (let book of parsedGPTresponse) {
+    //   const query =
+    //     book.title + (book.author ? ` inauthor:${book.author}` : "");
+    //   const url = `${baseURL}${encodeURIComponent(
+    //     query
+    //   )}&key=${apiKEYGoogleBooks}`;
+
+    //   try {
+    //     const response = await axios.get(url);
+
+    //     console.log(response);
+    //     // Access the results using response.data
+    //     const books = response.data.items; // an array of book objects
+
+    //     console.log("This is loging infor from googlebooksAPI", books);
+
+    //     if (books && books.length > 0) {
+    //       console.log(books[0].volumeInfo); // Log the first book's details
+    //     }
+    //   } catch (error) {
+    //     console.error(
+    //       `Error fetching details for ${book.title} from Google Books API:`,
+    //       error.message
+    //     );
+    //   }
+    // }
+
     // If you want to send back the result or some other response, you can do it here.
     res.json({ message: "Image processed successfully", result: result });
   } catch (error) {
