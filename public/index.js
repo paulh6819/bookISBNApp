@@ -1,6 +1,6 @@
 let image = {
   url: null,
-  message: "Sorry can't recognize this as a car!",
+  message: "Let's see what these books are worth",
 };
 
 async function handleDrop(event) {
@@ -20,14 +20,30 @@ async function handleDrop(event) {
     });
 
     if (response.ok) {
-      let data = await response.json();
+      let OCRdata = await response.json();
+      console.log("THIS IS OCR DATA", OCRdata);
 
       document.getElementById("imageMessage").innerText = data.text;
+
+      const isbToPriceMap = data.isbToPriceMap;
+
+      isbToPriceMapDisplay(isbToPriceMap);
     } else {
-      console.log("failed to process image");
+      console.log("failed to process image of OCR");
     }
   } else {
     alert("Invalid file type. Please drop an image file.");
+  }
+}
+
+function isbToPriceMapDisplay(map) {
+  const container = document.getElementById("isbnPriceContainer");
+  container.innerHTML = "";
+
+  for (const [isbn, price] of Object.entries(map)) {
+    const item = document.createElement("div");
+    item.innerText = `ISBN: ${isbn}, Price: ${price}`;
+    container.appendChild(item);
   }
 }
 

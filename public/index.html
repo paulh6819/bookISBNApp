@@ -21,7 +21,7 @@
                 </li>
             </ul>
         </nav>
-        <h1>What Books are you looking at?</h1>
+        <h1>How much are the books worth in front of you?</h1>
         <div class="center-container">
             <div 
                 class="drop-area" 
@@ -36,10 +36,12 @@
                     <p id="imageMessage"></p>
                     
                 </div>
-                <p>Drag and drop a photo here</p>
-                <label class="upload-button" for="file-upload">
-                    Or click here to upload
-                </label>
+                <div class="upload-container">
+                    <p>Drag and drop a photo here</p>
+                    <label class="upload-button" for="file-upload">
+                        Or click here to upload
+                    </label>
+                </div>
                 <input 
                     id="file-upload" 
                     type="file" 
@@ -48,6 +50,7 @@
         </div>
     </div>
     <div id="potentialBookTitles"></div>
+    <div id="isbnPriceContainer"></div>
     <script src="index.js"></script>
 </body>
 </html>
