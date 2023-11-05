@@ -14,6 +14,8 @@ const __dirname = dirname(__filename);
 const openai = new OpenAI({
   apiKey: process.env.CHAT_GPT_API_KEY, // defaults to process.env["OPENAI_API_KEY"]
 });
+const priceApiKey =
+  "TZSVHHOSXBXVRLXRDXXMIEFOXWZUOZVIGZZGJAWCDNRGKNEHQKRRSMDJOLJURSWI";
 
 // const CHAT_API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
 // const chatGPTApiKey = process.env.CHAT_GPT_API_KEY;
@@ -136,6 +138,13 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
     return res.status(400).send("No image uploaded.");
   }
   console.log("Image received. Proceeding with label detection.");
+  // let booksrunData = await axios.get(
+  //   `${baseBooksRunURL}${9781138790988}?key=${booksRunApiKey}`
+  // );
+  // console.log(
+  //   "this is my isbn test for booksrunData textbook",
+  //   booksrunData.data.result.text
+  // );
   try {
     // Path to the photo at the root
     const buffer = req.file.buffer;
@@ -162,7 +171,7 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
       res.status(500).send("error processing line");
       return;
     }
-
+    const allResults = [];
     //This brings back all the data from googles book API
     for (let bookOBJ of parsedGPTresponse) {
       if (bookOBJ.title) {
@@ -173,8 +182,6 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
         bookOBJ.title
       )}"&key=${apiKEYGoogleBooks}`;
       console.log("Constructed URL:", constructedURL);
-
-      let firstISBN;
 
       const isbnsFromGoogleBooks = [];
 
@@ -207,6 +214,7 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
       console.log("this is the array of isbns", isbnsFromGoogleBooks);
       //This is the array where I am storing the price obeject and isbns returned from books run
       let booksrunPrices = [];
+      //
 
       //Now I am sending the first ISBN to  books run
       try {
@@ -214,9 +222,15 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
           const booksrunResponse = await axios.get(
             `${baseBooksRunURL}${isbn}?key=${booksRunApiKey}`
           );
-          booksrunPrices.push([isbn, booksrunResponse.data.result.text]);
+
+          booksrunPrices.push([
+            bookOBJ.title,
+            isbn,
+            booksrunResponse.data.result.text,
+          ]);
           console.log(
             "this is the object coming back from books run for ISBN",
+
             isbn,
             booksrunResponse.data.result
           );
@@ -225,7 +239,7 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
           "this is the array of prices from books run",
           booksrunPrices
         );
-        //
+        allResults.push(...booksrunPrices);
       } catch (error) {
         console.error(
           "error getting book respnse from booksRUn",
@@ -268,7 +282,8 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
     // }
 
     // If you want to send back the result or some other response, you can do it here.
-    res.json({ message: "Image processed successfully", result: result });
+    console.log("this is the final result!:", allResults);
+    res.json({ message: "Image processed successfully", result: allResults });
   } catch (error) {
     console.error("Error processing line:", error.message);
     //  if (error.response && error.response.data) {

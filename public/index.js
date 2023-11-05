@@ -2,6 +2,7 @@ let image = {
   url: null,
   message: "Let's see what these books are worth",
 };
+const resultsContainer = document.getElementById("result-container");
 
 async function handleDrop(event) {
   event.preventDefault();
@@ -18,14 +19,20 @@ async function handleDrop(event) {
       method: "POST",
       body: formData,
     });
-
+    console.log("response data form backend: ", response);
     if (response.ok) {
-      let OCRdata = await response.json();
-      console.log("THIS IS OCR DATA", OCRdata);
+      const { result } = await response.json();
+      console.log("THIS IS OCR DATA", result);
 
-      document.getElementById("imageMessage").innerText = data.text;
-
-      const isbToPriceMap = data.isbToPriceMap;
+      result.forEach((bookrunItem) => {
+        const dataLine = document.createElement("div");
+        const prices =
+          typeof bookrunItem[2] === "string"
+            ? "Book has no value"
+            : `Value is ${bookrunItem[2].Good}`;
+        dataLine.innerText = `Name: ${bookrunItem[0]}, ISBN: ${bookrunItem[1]}, ${prices}`;
+        resultsContainer.appendChild(dataLine);
+      });
 
       isbToPriceMapDisplay(isbToPriceMap);
     } else {
