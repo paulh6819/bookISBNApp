@@ -1,3 +1,7 @@
+:root{
+  --gray:rbg(95,95,95);
+}
+
 .App {
     font-family: "Futura", sans-serif;
     text-align: center;
@@ -146,4 +150,8 @@
     opacity: 0;
     position: absolute;
     z-index: -1;
+}
+
+dt{
+  color: var(--gray);
 }
