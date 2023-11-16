@@ -1,3 +1,18 @@
+//THings to do:
+// 1. I need to fix the landing animation for when i drop a photo in.
+// finished - 2. I should have a loading state, a loading animation while waiting for the data, CSS is fast
+
+//3. look up nullish coalessing
+//4.look upoptional chaining
+
+//5. I want to figure out a way to get every image on screen to see whats coming back!
+
+//6. Put an the images in an icon and then have a "more" tab for more info, that expands the image and the text. That way more can be seen at once.
+//7. find out how to do different things with data, and async. Because waiting for everything is slowing down my app plus i want differnt things to happen
+// and the way the app is structered is slowing me down
+
+//8. I need to implement javascript pupeeteer mode to move the CSV file to bookScouter
+
 import express from "express";
 import axios from "axios";
 import multer from "multer";
@@ -64,7 +79,7 @@ app.get("/fetchbooks", async (req, res) => {
 
     if (googleData.data.items) {
       for (const item of googleData.data.items) {
-        if (item.volumeInfo && item.volumeInfo.industryIdentifiers) {
+        if (item.volumeInfo?.industryIdentifiers) {
           for (const identifier of item.volumeInfo.industryIdentifiers) {
             if (identifier.type === "ISBN_13") {
               isbn13List.push(identifier.identifier);
@@ -75,7 +90,7 @@ app.get("/fetchbooks", async (req, res) => {
       }
     }
 
-    console.log(isbn13List);
+    console.log("these are all the ISBNs", isbn13List);
     let booksrunDataList2 = [];
 
     for (const isbn13 of isbn13List) {
@@ -129,13 +144,18 @@ async function getBooksFromChatGPT(ocrText) {
   for await (const part of stream) {
     responseContent += part.choices[0]?.delta?.content || "";
   }
-  console.log("this is chatgpt respnse", responseContent);
+  console.log(
+    "this is chatgpt respnse",
+    responseContent,
+    "this is the end of the response content"
+  );
   return responseContent;
 }
 
 //This is my main function right now.
 
 app.post("/detectLabels", upload.single("image"), async (req, res) => {
+  let finalArryOfSetISBNS = "";
   if (!req.file) {
     console.log("No image provided.");
     return res.status(400).send("No image uploaded.");
@@ -163,7 +183,7 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
     // chatGPT's parsing response
     const chatGPTResponse = await getBooksFromChatGPT(textBackFromGoolgesOCR);
 
-    console.log(chatGPTResponse);
+    console.log("chatGPT response", chatGPTResponse);
 
     let parsedGPTresponse;
 
@@ -196,8 +216,8 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
           const googleBooksResponse = await axios.get(constructedURL);
 
           if (
-            googleBooksResponse.data.items &&
-            googleBooksResponse.data.items.length > 0
+            //  googleBooksResponse.data.items &&
+            googleBooksResponse.data.items?.length > 0
           ) {
             // Get the first item's thumbnail
             const firstItemThumbnail =
@@ -247,7 +267,7 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
         }
       }
     }
-
+    let totalISBNS = [];
     //This brings back all the data from googles book API
     for (let bookOBJ of parsedGPTresponse) {
       if (bookOBJ.title) {
@@ -285,6 +305,10 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
             ) {
               item.volumeInfo.industryIdentifiers.forEach((identifier) => {
                 isbnsFromGoogleBooks.push(identifier.identifier);
+                console.log(
+                  "this is an identifier ISBN",
+                  identifier.identifier
+                );
               });
             }
             let firstBookImage = temporaryBookImageArray[0];
@@ -307,6 +331,11 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
             let firstResponseForBookImage = temporaryBookImageArray[0];
             bookImages.push(firstResponseForBookImage);
             //  bookImages.push(firstResponseForBookImage);
+            totalISBNS.push(isbnsFromGoogleBooks);
+            console.log(
+              "these are the isbns PERBOOK NEW NEW NEW",
+              isbnsFromGoogleBooks
+            );
           });
           //bookImages.push(arrayOfEachBookImage);
           // console.log(bookImages);
@@ -322,7 +351,24 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
         }
       }
       console.log("here are the image URLS", bookImages);
-      console.log("this is the array of isbns", isbnsFromGoogleBooks);
+      console.log("this is the array of isbns per book", isbnsFromGoogleBooks);
+      console.log("these should be all the ISBNS", totalISBNS);
+
+      const setOfIBNS = new Set();
+      totalISBNS.forEach((isbnSubArray) => {
+        isbnSubArray.forEach((isbn) => {
+          setOfIBNS.add(isbn);
+        });
+      });
+      console.log("this is the set of ISBNS", [...setOfIBNS]);
+      finalArryOfSetISBNS = [...setOfIBNS];
+      console.log(
+        "this is the size of the finaly array of isBNS",
+        finalArryOfSetISBNS.length
+      );
+      finalArryOfSetISBNS.forEach((isbn) => {
+        console.log(isbn);
+      });
     }
     //This is the array where I am storing the price obeject and isbns returned from books run
     //  let booksrunPrices = [];
@@ -405,6 +451,7 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
       bookUrls: bookImages,
       mappedImageAndSummary: mappedBookToImageAndSummary,
       pricePlaceHolder: { Average: 0, Good: 0, New: 0 },
+      arrayOfISBNs: finalArryOfSetISBNS,
     });
   } catch (error) {
     console.error(

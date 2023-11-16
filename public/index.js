@@ -1,13 +1,17 @@
+//import { download } from "express/lib/response";
+
 let image = {
   url: null,
   message: "Let's see what these books are worth",
 };
 const resultsContainer = document.getElementById("result-container");
-
+console.log("hey");
+let isbnData;
 async function handleDrop(event) {
   event.preventDefault();
   const file = event.dataTransfer.files[0];
   console.log("Dropped file:", file);
+  showHamsterAndDimBackground();
 
   if (file && file.type.match(/^image\//)) {
     updateImage(URL.createObjectURL(file));
@@ -21,15 +25,23 @@ async function handleDrop(event) {
     });
     console.log("response data form backend: ", response);
     if (response.ok) {
-      const { result, bookUrls, mappedImageAndSummary, pricePlaceHolder } =
-        await response.json();
-      console.log("THIS IS OCR DATA", result);
+      const {
+        result,
+        bookUrls,
+        mappedImageAndSummary,
+        pricePlaceHolder,
+        arrayOfISBNs,
+      } = await response.json();
+      console.log("This is my main object", result);
       console.log("trying to get URLS here", bookUrls);
       console.log("here are the mapped images", mappedImageAndSummary);
       console.log("here are the summarya", mappedImageAndSummary[0].summary);
       console.log("this is the place holder", pricePlaceHolder);
+      console.log("these are the ISBNS", arrayOfISBNs);
       //console.log("this is ISBN", mappedImageAndSummary[0].ISBN[0].type);
-
+      isbnData = arrayOfISBNs;
+      console.log(isbnData);
+      hideHamsterAndRemoveDim();
       mappedImageAndSummary.forEach((result) => {
         const bookContainer = document.createElement("div");
         bookContainer.className = "book-container";
@@ -37,42 +49,48 @@ async function handleDrop(event) {
 
         // This creates the title for the book in the UI
         const bookTitle = document.createElement("h2");
-        bookTitle.innerText = result.title;
+        bookTitle.innerHTML = result.title;
 
-        // Create an image element for the book cover
+        let authorsElement = document.createElement("h4");
+        authorsElement.innerHTML = `<span class="label"> Author: </span> ${
+          result?.author[0] ?? ""
+        }`;
+
+        let publisherElemnt = document.createElement("h4");
+        publisherElemnt.innerHTML = `<span class="label">Publisher:</span> ${
+          result?.publisher ?? ""
+        }`;
+
+        let ISBNElemnet = document.createElement("h4");
+        ISBNElemnet.innerHTML = `<span class="label">ISBN number:</span> ${
+          result.ISBN?.[0]?.identifier ?? ""
+        }`;
+
+        const summaryElememnt = document.createElement("p"); // Create an image element for the book cover
         const imgElement = document.createElement("img"); // Create an actual img element
         imgElement.src = result.imageUrl; // Set the source of the image element
+
         imgElement.alt = `Cover of the book ${result.title}`;
         imgElement.style.width = "100px";
         imgElement.style.height = "auto";
 
-        let authorsElement = document.createElement("h4");
-        authorsElement.innerText = `Author:${result.author[0]}`;
+        summaryElememnt.innerHTML = result.summary;
+        // const test = toHTML(
+        //   `<div>
+        //      <dl>
+        //         <dt class= "title"> Title </dt>  <dd> ${result.title} </dd>
 
-        let publisherElemnt = document.createElement("h4");
-        publisherElemnt.innerText = `Publisher: ${result.publisher}`;
+        //           <dt> ISBN </dt>
+        //           <dd> ${result.ISBN[0].identifier} </dd>
+        //     </dl>
+        //        <p>
+        //           <a href="https://developer.mozilla.org/en-US/docs/Web/API/range/createContextualFragment">
+        //               Hello <strong>World!</strong>
+        //           </a>
+        //        </p>
 
-        let ISBNElemnet = document.createElement("h4");
-        ISBNElemnet.innerText = `ISBN number ${result.ISBN[0].identifier}`;
-
-        const summaryElememnt = document.createElement("p");
-        summaryElememnt.innerText = result.summary;
-        const test = toHTML(
-          `<div>
-             <dl>
-                <dt class= "title"> Title </dt>
-                  <dd> ${result.title} </dd>
-                  <dt> ISBN </dt>
-                  <dd> ${result.ISBN[0].identifier} </dd>
-            </dl>
-               <p>
-                  <a href="https://developer.mozilla.org/en-US/docs/Web/API/range/createContextualFragment">
-                      Hello <strong>World!</strong>
-                  </a>
-               </p>
-               
-          </div>`
-        );
+        //   </div>`
+        // );
 
         bookContainer.appendChild(imgElement);
         bookContainer.appendChild(bookTitle);
@@ -80,10 +98,10 @@ async function handleDrop(event) {
         bookContainer.appendChild(authorsElement);
         bookContainer.appendChild(publisherElemnt);
         bookContainer.appendChild(ISBNElemnet);
-        bookContainer.appendChild(test);
+        // bookContainer.appendChild(test);
         if (result.rating) {
           let ratingElement = document.createElement("h4");
-          ratingElement.innerText = `Rating: ${result.rating}`;
+          ratingElement.innerHTML = `<span class="label">Rating:</span> ${result.rating}`;
           bookContainer.appendChild(ratingElement);
         }
 
@@ -110,13 +128,41 @@ async function handleDrop(event) {
         resultsContainer.appendChild(dataLine);
       });
 
-      isbToPriceMapDisplay(isbToPriceMap);
+      // isbToPriceMapDisplay(isbToPriceMap ?? {});
     } else {
       console.log("failed to process image of OCR");
     }
   } else {
     alert("Invalid file type. Please drop an image file.");
   }
+  function csvFormatter(data) {
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "isbn\n";
+    console.log("isbn infor the foreach", isbnData);
+    data.forEach((row) => {
+      csvContent += row + "\n";
+    });
+    return csvContent;
+  }
+
+  function downloadCsvContent(content, filename = "isbn.csv") {
+    const encodedUri = encodeURI(content);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", filename);
+    link.setAttribute("class", "downloadLink");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  let csvContentVariable = csvFormatter(isbnData);
+
+  document
+    .getElementById("downloadButton")
+    .addEventListener("click", function () {
+      downloadCsvContent(csvContentVariable);
+    });
 }
 
 function isbToPriceMapDisplay(map) {
@@ -155,4 +201,17 @@ function updateImage(url) {
 
 function toHTML(s) {
   return document.createRange().createContextualFragment(s);
+}
+
+function showHamsterAndDimBackground() {
+  document.querySelector(".wheel-and-hamster").style.display = "block";
+  // const loadingElement = document.createElement("h1");
+  // loadingElement.innerHTML = "LOADING";
+  // document.body.appendChild(loadingElement);
+  document.querySelector(".dim-background").style.display = "block";
+}
+
+function hideHamsterAndRemoveDim() {
+  document.querySelector(".wheel-and-hamster").style.display = "none";
+  document.querySelector(".dim-background").style.display = "none";
 }
