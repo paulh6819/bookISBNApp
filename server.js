@@ -13,6 +13,16 @@
 
 //8. I need to implement javascript pupeeteer mode to move the CSV file to bookScouter
 
+//9. a really cool feature would be if all the text that was on the sreen on the iphone as the user went to take a photo popped up on the mobile phone
+// as the OCR started to identify the text on the book
+
+//10. learn the basics of websockets on a seperate little practice page or app
+
+//11. I need to get the websocket concept understood because my app brings back all the infomation if the user can click for more info
+
+import { spawn } from "child_process";
+
+import { exec } from "child_process";
 import express from "express";
 import axios from "axios";
 import multer from "multer";
@@ -183,7 +193,7 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
     // chatGPT's parsing response
     const chatGPTResponse = await getBooksFromChatGPT(textBackFromGoolgesOCR);
 
-    console.log("chatGPT response", chatGPTResponse);
+    // console.log("chatGPT response", chatGPTResponse);
 
     let parsedGPTresponse;
 
@@ -198,6 +208,8 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
     const mappedBookToImageAndSummary = [];
 
     const bookImages = [];
+    const totalArrayOfImages = [];
+
     // let setOfBookImages = new Set(bookImages);
     //console.log("here are some URLS", bookImages);
 
@@ -219,6 +231,14 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
             //  googleBooksResponse.data.items &&
             googleBooksResponse.data.items?.length > 0
           ) {
+            googleBooksResponse.data.items.forEach((arryOfBookInfo) => {
+              if (arryOfBookInfo.volumeInfo.imageLinks?.thumbnail) {
+                totalArrayOfImages.push(
+                  arryOfBookInfo.volumeInfo.imageLinks?.thumbnail
+                );
+              }
+            });
+
             // Get the first item's thumbnail
             const firstItemThumbnail =
               googleBooksResponse.data.items[0].volumeInfo.imageLinks
@@ -231,6 +251,7 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
 
             const firstAuthor =
               googleBooksResponse.data.items[0].volumeInfo.authors;
+            console.log("this is the first authorr", firstAuthor);
 
             const firstPublisher =
               googleBooksResponse.data.items[0].volumeInfo.publisher;
@@ -244,21 +265,29 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
             console.log("This is the first summary", firstItemDescription);
             console.log("This is the first isbn", firstISBN);
 
-            if (firstItemThumbnail) {
-              // Create an object that contains the title and the corresponding image
-              const resultWithImage = {
-                title: bookOBJ.title,
-                imageUrl: firstItemThumbnail,
-                summary: firstItemDescription,
-                author: firstAuthor,
-                publisher: firstPublisher,
-                rating: firstRating,
-                ISBN: firstISBN,
-              };
+            //   if (firstItemThumbnail) {
+            // Create an object that contains the title and the corresponding image
+            const resultWithImage = {
+              title: bookOBJ.title,
+              imageUrl: firstItemThumbnail,
+              summary: firstItemDescription,
+              author: firstAuthor,
+              publisher: firstPublisher,
+              rating: firstRating,
+              ISBN: firstISBN,
+            };
 
-              // Push the object into an array that will contain all results with images AND SUMMARY
-              mappedBookToImageAndSummary.push(resultWithImage);
-            }
+            // Push the object into an array that will contain all results with images AND SUMMARY
+            mappedBookToImageAndSummary.push(resultWithImage);
+            console.log(
+              "this is the result with image thats supposed to push broze age mindset",
+              resultWithImage
+            );
+            // }
+            console.log(
+              "this is the complete obkect",
+              mappedBookToImageAndSummary
+            );
           }
         } catch (error) {
           console.error("Error fetching from Google Books API:", error);
@@ -444,11 +473,48 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
     // If you want to send back the result or some other response, you can do it here.
     // console.log("this is the final result!:", allResults);
     console.log("this is the mappedBookTOimage", mappedBookToImageAndSummary);
+    console.log("this is the array of book images", totalArrayOfImages);
+    console.log("this is the allresults varible", allResults);
+
+    const isbnArgs = finalArryOfSetISBNS.join(",");
+
+    // Spawn the Puppeteer script process---------------
+
+    const puppeteerProcess = spawn("node", [
+      "pupeteerCVSformatterfile.js",
+      isbnArgs,
+    ]);
+
+    puppeteerProcess.stdout.on("data", (data) => {
+      console.log(`stdout: ${data}`);
+    });
+
+    puppeteerProcess.stderr.on("data", (data) => {
+      console.error(`stderr: ${data}`);
+    });
+
+    puppeteerProcess.on("close", (code) => {
+      console.log(`child process exited with code ${code}`);
+    });
+
+    //--------------------------
+
+    const urlArrayString = JSON.stringify(totalArrayOfImages);
+    exec(
+      `python3 image_comparison.py '${urlArrayString}'`,
+      (error, stdout, stderr) => {
+        if (error) {
+          console.error(`exec error: ${error}`);
+          return;
+        }
+        console.log(`Python Output: ${stdout}`);
+      }
+    );
 
     res.json({
       message: "Image processed successfully",
       result: allResults,
-      bookUrls: bookImages,
+      bookUrls: totalArrayOfImages,
       mappedImageAndSummary: mappedBookToImageAndSummary,
       pricePlaceHolder: { Average: 0, Good: 0, New: 0 },
       arrayOfISBNs: finalArryOfSetISBNS,

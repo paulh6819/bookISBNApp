@@ -24,6 +24,7 @@ async function handleDrop(event) {
       body: formData,
     });
     console.log("response data form backend: ", response);
+
     if (response.ok) {
       const {
         result,
@@ -35,25 +36,36 @@ async function handleDrop(event) {
       console.log("This is my main object", result);
       console.log("trying to get URLS here", bookUrls);
       console.log("here are the mapped images", mappedImageAndSummary);
-      console.log("here are the summarya", mappedImageAndSummary[0].summary);
+      // console.log(
+      //   "here are the summarya",
+      //   mappedImageAndSummary?.[0]?.summary ??
+      //     "No summary availibe unfortunately"
+      // );
       console.log("this is the place holder", pricePlaceHolder);
       console.log("these are the ISBNS", arrayOfISBNs);
       //console.log("this is ISBN", mappedImageAndSummary[0].ISBN[0].type);
       isbnData = arrayOfISBNs;
       console.log(isbnData);
       hideHamsterAndRemoveDim();
+      showCSVButtonAfterPhotoIsDroppedAndThereIsData();
       mappedImageAndSummary.forEach((result) => {
         const bookContainer = document.createElement("div");
         bookContainer.className = "book-container";
         bookContainer.style.border = "1px solid black";
+        bookContainer.className = "book-container";
 
         // This creates the title for the book in the UI
         const bookTitle = document.createElement("h2");
         bookTitle.innerHTML = result.title;
 
+        const details = document.createElement("details");
+        const summary = document.createElement("summary");
+        summary.textContent = result.title;
+        details.appendChild(summary);
+
         let authorsElement = document.createElement("h4");
         authorsElement.innerHTML = `<span class="label"> Author: </span> ${
-          result?.author[0] ?? ""
+          result?.author?.[0] ?? ""
         }`;
 
         let publisherElemnt = document.createElement("h4");
@@ -66,13 +78,14 @@ async function handleDrop(event) {
           result.ISBN?.[0]?.identifier ?? ""
         }`;
 
-        const summaryElememnt = document.createElement("p"); // Create an image element for the book cover
+        const summaryElememnt = document.createElement("p");
         const imgElement = document.createElement("img"); // Create an actual img element
         imgElement.src = result.imageUrl; // Set the source of the image element
 
         imgElement.alt = `Cover of the book ${result.title}`;
-        imgElement.style.width = "100px";
-        imgElement.style.height = "auto";
+        imgElement.classList.add("book-container-img");
+        // imgElement.style.width = "100px";
+        // imgElement.style.height = "auto";
 
         summaryElememnt.innerHTML = result.summary;
         // const test = toHTML(
@@ -92,20 +105,35 @@ async function handleDrop(event) {
         //   </div>`
         // );
 
+        details.appendChild(authorsElement);
+        details.appendChild(summaryElememnt);
+        details.appendChild(publisherElemnt);
+        details.appendChild(ISBNElemnet);
+
         bookContainer.appendChild(imgElement);
-        bookContainer.appendChild(bookTitle);
-        bookContainer.appendChild(summaryElememnt);
-        bookContainer.appendChild(authorsElement);
-        bookContainer.appendChild(publisherElemnt);
-        bookContainer.appendChild(ISBNElemnet);
+        // bookContainer.appendChild(bookTitle);
+        // bookContainer.appendChild(summaryElememnt);
+        // bookContainer.appendChild(authorsElement);
+        // bookContainer.appendChild(publisherElemnt);
+        // bookContainer.appendChild(ISBNElemnet);
+
+        bookContainer.appendChild(details);
         // bookContainer.appendChild(test);
         if (result.rating) {
           let ratingElement = document.createElement("h4");
           ratingElement.innerHTML = `<span class="label">Rating:</span> ${result.rating}`;
-          bookContainer.appendChild(ratingElement);
+          details.appendChild(ratingElement);
         }
 
         resultsContainer.appendChild(bookContainer);
+
+        details.addEventListener("toggle", (event) => {
+          if (event.newState === "open") {
+            imgElement.classList.add("details-open");
+          } else {
+            imgElement.classList.remove("details-open");
+          }
+        });
       });
 
       bookUrls.forEach((url) => {
@@ -214,4 +242,8 @@ function showHamsterAndDimBackground() {
 function hideHamsterAndRemoveDim() {
   document.querySelector(".wheel-and-hamster").style.display = "none";
   document.querySelector(".dim-background").style.display = "none";
+}
+
+function showCSVButtonAfterPhotoIsDroppedAndThereIsData() {
+  document.getElementById("downloadButton").style.display = "block";
 }
