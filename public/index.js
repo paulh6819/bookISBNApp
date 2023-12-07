@@ -164,6 +164,11 @@ async function handleDrop(event) {
     alert("Invalid file type. Please drop an image file.");
   }
   function csvFormatter(data) {
+    if (!Array.isArray(data)) {
+      console.error("this cvs parser is throwing errors dawg", data);
+      return "";
+    }
+
     let csvContent = "data:text/csv;charset=utf-8,";
     csvContent += "isbn\n";
     console.log("isbn infor the foreach", isbnData);
@@ -191,6 +196,89 @@ async function handleDrop(event) {
     .addEventListener("click", function () {
       downloadCsvContent(csvContentVariable);
     });
+
+  function parseCSV(csvData) {
+    let lines = csvData.split("\n");
+    let headers = lines[0].split(",");
+    let result = lines.slice(1).map((line) => {
+      let obj = {};
+      let currentline = line.split(",");
+      headers.forEach((header, i) => {
+        obj[header] = currentline[i];
+      });
+      return obj;
+    });
+    return result;
+  }
+
+  function displayFileData(csvData) {
+    let parsedData = parseCSV(csvData);
+    let container = document.createElement("div");
+    let table = document.createElement("table");
+    let tableHead = document.createElement("thead");
+    let headerRow = document.createElement("tr");
+
+    // Create the header row
+    Object.keys(parsedData[0]).forEach((header) => {
+      let headerCell = document.createElement("th");
+      headerCell.textContent = header;
+      headerRow.appendChild(headerCell);
+    });
+    tableHead.appendChild(headerRow);
+    table.appendChild(tableHead);
+
+    // Create the body of the table
+    let tableBody = document.createElement("tbody");
+    parsedData.forEach((row) => {
+      let tableRow = document.createElement("tr");
+      Object.values(row).forEach((text) => {
+        let tableCell = document.createElement("td");
+        tableCell.textContent = text;
+        tableRow.appendChild(tableCell);
+      });
+      tableBody.appendChild(tableRow);
+    });
+    table.appendChild(tableBody);
+    container.appendChild(table);
+    document.body.appendChild(container); // Append to the body or a specific element
+  }
+
+  function fetchFileData() {
+    const maxAttempts = 1000;
+    let attempts = 0;
+
+    function attemptFetch() {
+      fetch("/getMostRecentFile")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("No file found");
+          }
+          return response.json();
+        })
+        .then(async (data) => {
+          console.log(
+            "File data from the front end containing the CSV file:",
+            // JSON.stringify(data.file.data)
+            data
+          );
+          displayFileData(data.file);
+        })
+        .catch((error) => {
+          if (attempts++ < maxAttempts) {
+            setTimeout(attemptFetch, 3000); // Wait for 2 seconds before trying again
+          } else {
+            console.error(
+              "Error fetching file after multiple attempts:",
+              error
+            );
+          }
+        });
+    }
+
+    attemptFetch();
+  }
+
+  fetchFileData();
 }
 
 function isbToPriceMapDisplay(map) {

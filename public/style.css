@@ -2,11 +2,18 @@
   --gray: #877d7d;;
 }
 
+/* ::selection {
+  background: black;
+  color: red;
+  } */
+
+
 .App {
     font-family: "Futura", sans-serif;
     text-align: center;
   }
   
+
   /* Styling for the menu */
   .menu {
     list-style-type: none;
@@ -32,7 +39,11 @@
     background-color: #f0f0f0;
     color: #555;
   }
-
+  .menu-category::selection{
+    color: rgb(240, 194, 203);
+    font-size: 20px;
+    background-color: black;
+ }
   h1 {
     margin: 50px auto;
     margin-bottom: 40px;

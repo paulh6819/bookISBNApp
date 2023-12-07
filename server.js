@@ -476,10 +476,8 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
     console.log("this is the array of book images", totalArrayOfImages);
     console.log("this is the allresults varible", allResults);
 
-    const isbnArgs = finalArryOfSetISBNS.join(",");
-
     // Spawn the Puppeteer script process---------------
-
+    const isbnArgs = finalArryOfSetISBNS.join(",");
     const puppeteerProcess = spawn("node", [
       "pupeteerCVSformatterfile.js",
       isbnArgs,
@@ -532,6 +530,64 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
     res.status(500).send("Error processing the image.");
   }
 });
+app.use(express.json());
+
+let storedFile; // This variable will hold the most recent file data
+
+app.post("/setMostRecentFile", (req, res) => {
+  storedFile = req.body.file;
+  console.log("this is the stored file", storedFile);
+  res.send(
+    "File received from puppeteer containing book scouter prices and data"
+  );
+});
+
+// app.get("/getMostRecentFile", (req, res) => {
+//   if (storedFile) {
+//     // Convert the buffer data to a string
+//     const fileContent = storedFile.data.toString();
+//     res.json({ file: fileContent });
+//     console.log(
+//       "this is the converted buffer to jason string file",
+//       fileContent
+//     );
+//   } else {
+//     res.status(404).send("No file stored");
+//   }
+// });
+
+app.get("/getMostRecentFile", (req, res) => {
+  if (storedFile) {
+    // Convert the buffer data (character codes) to a string
+    const fileContent = String.fromCharCode.apply(null, storedFile.data);
+    res.json({ file: fileContent });
+    console.log(
+      "this is the converted buffer to jason string file",
+      fileContent
+    );
+  } else {
+    res.status(404).send("No file stored");
+  }
+});
+
+// app.get("/getFileContent", (req, res) => {
+//   if (storedFile) {
+//     const filePath = path.join(
+//       __dirname,
+//       "path-to-directory-containing-files",
+//       storedFile
+//     );
+//     fs.readFile(filePath, "utf8", (err, data) => {
+//       if (err) {
+//         console.error("Error reading the file:", err);
+//         return res.status(500).send("Error reading the file");
+//       }
+//       res.send(data);
+//     });
+//   } else {
+//     res.status(404).send("No file stored");
+//   }
+// });
 
 //Not really sure what this does, just syntax as far as I'm concerned. Not part of my logic
 app

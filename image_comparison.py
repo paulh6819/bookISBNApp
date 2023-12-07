@@ -39,7 +39,7 @@ def main():
     url_array = json.loads(url_array_string)
 
     # Load and process the pre-chosen image
-    prechosen_image_path = 'front_of_batman.jpg'  # Update this path
+    prechosen_image_path = 'frontOfpredicitabley_irrational.jpg'  # Update this path
     prechosen_image = cv2.imread(prechosen_image_path)
     prechosen_image = cv2.cvtColor(prechosen_image, cv2.COLOR_BGR2HSV)
 
