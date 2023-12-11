@@ -75,12 +75,14 @@
     position: relative;
     width: 100px;
     height: 100px;
+    opacity: .8;
   }
   
   .arrow {
     position: absolute;
     width: 100%;
     height: 100%;
+    opacity: .6;
     background: radial-gradient(
       circle at center,
       red 20%,
@@ -277,15 +279,19 @@ font-family: Verdana, Geneva, Tahoma, sans-serif;
   display: flex;
   align-items: center;
   gap: 20px;
-  border-radius: 3px;
-  margin: 5px;;
+  border-radius: 4px;
+  margin: 8px;
+  width: 66%;
+  box-shadow: 0px 0px 33px rgb(224 220 220);
+  transform: translate(25%, -0%);
 }
 
 .book-container-img{
   height: 60px;
   width: auto;
   /* top: 5px; */
-  margin:4px;
+  margin:15px;
+  
 }
 
 details[open] summary ~ * {
@@ -300,6 +306,8 @@ details[open] summary ~ * {
 details[open] > summary {
   font-size: 25px; /* Larger size when open */
   font-weight: bold;
+  padding: 5px;
+  text-align: left;
 }
 
 
@@ -307,4 +315,12 @@ details[open] > summary {
 .details-open{
   height: 200px;
 
+}
+
+#drag-and-drop-text{
+  font-size: 20px;
+}
+
+#result-container{
+  justify-content: center;
 }

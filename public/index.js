@@ -51,36 +51,42 @@ async function handleDrop(event) {
       mappedImageAndSummary.forEach((result) => {
         const bookContainer = document.createElement("div");
         bookContainer.className = "book-container";
-        bookContainer.style.border = "1px solid black";
+        // bookContainer.style.border = "1px solid black";
         bookContainer.className = "book-container";
 
         // This creates the title for the book in the UI
         const bookTitle = document.createElement("h2");
         bookTitle.innerHTML = result.title;
-
+        bookTitle.style.textAlign = "left";
+        bookTitle.style.backgroundColor = "red";
         const details = document.createElement("details");
         const summary = document.createElement("summary");
         summary.textContent = result.title;
         details.appendChild(summary);
 
-        let authorsElement = document.createElement("h4");
+        let authorsElement = document.createElement("p");
         authorsElement.innerHTML = `<span class="label"> Author: </span> ${
           result?.author?.[0] ?? ""
         }`;
+        authorsElement.style.textAlign = "left";
 
-        let publisherElemnt = document.createElement("h4");
+        let publisherElemnt = document.createElement("p");
+        publisherElemnt.style.textAlign = "left";
         publisherElemnt.innerHTML = `<span class="label">Publisher:</span> ${
           result?.publisher ?? ""
         }`;
 
-        let ISBNElemnet = document.createElement("h4");
+        let ISBNElemnet = document.createElement("p");
         ISBNElemnet.innerHTML = `<span class="label">ISBN number:</span> ${
           result.ISBN?.[0]?.identifier ?? ""
         }`;
+        ISBNElemnet.style.textAlign = "left";
 
         const summaryElememnt = document.createElement("p");
         const imgElement = document.createElement("img"); // Create an actual img element
         imgElement.src = result.imageUrl; // Set the source of the image element
+        summaryElememnt.style.margin = "15px";
+        summaryElememnt.style.textAlign = "left";
 
         imgElement.alt = `Cover of the book ${result.title}`;
         imgElement.classList.add("book-container-img");
@@ -104,11 +110,17 @@ async function handleDrop(event) {
 
         //   </div>`
         // );
-
+        if (result.rating) {
+          let ratingElement = document.createElement("p");
+          ratingElement.innerHTML = `<span class="label">Rating:</span> ${result.rating}`;
+          details.appendChild(ratingElement);
+          ratingElement.style.textAlign = "left";
+        }
         details.appendChild(authorsElement);
-        details.appendChild(summaryElememnt);
+
         details.appendChild(publisherElemnt);
         details.appendChild(ISBNElemnet);
+        details.appendChild(summaryElememnt);
 
         bookContainer.appendChild(imgElement);
         // bookContainer.appendChild(bookTitle);
@@ -119,11 +131,6 @@ async function handleDrop(event) {
 
         bookContainer.appendChild(details);
         // bookContainer.appendChild(test);
-        if (result.rating) {
-          let ratingElement = document.createElement("h4");
-          ratingElement.innerHTML = `<span class="label">Rating:</span> ${result.rating}`;
-          details.appendChild(ratingElement);
-        }
 
         resultsContainer.appendChild(bookContainer);
 
