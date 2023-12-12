@@ -72,6 +72,7 @@ async function handleDrop(event) {
 
         let publisherElemnt = document.createElement("p");
         publisherElemnt.style.textAlign = "left";
+        publisherElemnt.style.marginBottom = "7px";
         publisherElemnt.innerHTML = `<span class="label">Publisher:</span> ${
           result?.publisher ?? ""
         }`;
@@ -81,6 +82,7 @@ async function handleDrop(event) {
           result.ISBN?.[0]?.identifier ?? ""
         }`;
         ISBNElemnet.style.textAlign = "left";
+        ISBNElemnet.style.margin = "0px";
 
         const summaryElememnt = document.createElement("p");
         const imgElement = document.createElement("img"); // Create an actual img element
@@ -88,7 +90,7 @@ async function handleDrop(event) {
         summaryElememnt.style.margin = "15px";
         summaryElememnt.style.textAlign = "left";
 
-        imgElement.alt = `Cover of the book ${result.title}`;
+        imgElement.alt = ` `;
         imgElement.classList.add("book-container-img");
         // imgElement.style.width = "100px";
         // imgElement.style.height = "auto";
@@ -143,15 +145,17 @@ async function handleDrop(event) {
         });
       });
 
-      bookUrls.forEach((url) => {
-        const imgElemnt = document.createElement("img");
-        imgElemnt.src = url;
-        imgElemnt.alt = "Book Cover";
-        imgElemnt.style.width = "100px";
-        imgElemnt.style.height = "auto";
+      //below is the code for showing all the book covers
 
-        resultsContainer.appendChild(imgElemnt);
-      });
+      // bookUrls.forEach((url) => {
+      //   const imgElemnt = document.createElement("img");
+      //   imgElemnt.src = url;
+      //   imgElemnt.alt = "Book Cover";
+      //   imgElemnt.style.width = "100px";
+      //   imgElemnt.style.height = "auto";
+
+      //   resultsContainer.appendChild(imgElemnt);
+      // });
 
       result.forEach((bookrunItem) => {
         const dataLine = document.createElement("div");
@@ -229,6 +233,8 @@ async function handleDrop(event) {
     Object.keys(parsedData[0]).forEach((header) => {
       let headerCell = document.createElement("th");
       headerCell.textContent = header;
+      headerCell.style.fontWeight = "bold"; // Make header text bold
+      headerCell.style.borderBottom = "1px solid black"; // Add a line under the header
       headerRow.appendChild(headerCell);
     });
     tableHead.appendChild(headerRow);
