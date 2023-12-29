@@ -1,56 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Detector</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="hamster.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Detector</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="hamster.css" />
+  </head>
+  <body>
     <div class="App">
-        <div class="dim-background"></div>
-        <nav>
-            <ul class="menu">
-                <li>
-                    <a class="menu-category" href="/">Home</a>
-                </li>
-                <li>
-                    <a class="menu-category" href="/about">About</a>
-                </li>
-                <li>
-                    <a href="/contact">Contact</a>
-                </li>
-            </ul>
-        </nav>
-        <h1>How much are the books worth in front of you?</h1>
-        <div class="center-container">
-            <div 
-                class="drop-area" 
-                ondrop="handleDrop(event)" 
-                ondragover="handleDragOver(event)">
-                <div class="animation-container">
-                   
-                    <div class="arrow"></div>
-                </div>
-                <div class="image-preview" id="imagePreview">
-                    <img id="droppedImage" >
-                    <p id="imageMessage"></p>
-                    
-                </div>
-                <div class="upload-container">
-                    <p id="drag-and-drop-text">Drag and drop a photo here</p>
-                    <label class="upload-button" for="file-upload">
-                        Or click here to upload
-                    </label>
-                </div>
-                <input 
-                    id="file-upload" 
-                    type="file" 
-                    onchange="handleFileSelect(event)">
-            </div>
+      <div class="dim-background"></div>
+      <nav>
+        <ul class="menu">
+          <li>
+            <a class="menu-category" href="/">Home</a>
+          </li>
+          <li>
+            <a class="menu-category" href="/about">About</a>
+          </li>
+          <li>
+            <a href="/contact">Contact</a>
+          </li>
+        </ul>
+      </nav>
+      <h1>How much are the books worth in front of you?</h1>
+      <div class="center-container">
+        <div
+          class="drop-area"
+          ondrop="handleDrop(event)"
+          ondragover="handleDragOver(event)"
+        >
+          <div class="animation-container">
+            <div class="arrow"></div>
+          </div>
+          <div class="image-preview" id="imagePreview">
+            <img id="droppedImage" />
+            <p id="imageMessage"></p>
+          </div>
+          <div class="upload-container">
+            <p id="drag-and-drop-text">Drag and drop a photo here</p>
+            <label class="upload-button" for="file-upload">
+              Or click here to upload
+            </label>
+          </div>
+          <input
+            id="file-upload"
+            type="file"
+            onchange="handleFileSelect(event)"
+          />
         </div>
-        <!-- ;<div id="loadingIcon">
+      </div>
+      <!-- ;<div id="loadingIcon">
             <div class="row">
                 <div class="colorSq"></div>
                 <div class="colorSq"></div>
@@ -68,35 +68,42 @@
             </div>
             <p>...loading</p>
           </div>  -->
-          <!-- <div id="hamster-loading"> -->
-            
-          <div aria-label="Orange and tan hamster running in a metal wheel" role="img" class="wheel-and-hamster">
-            <div class="wheel"></div>
-            <div class="hamster">
-                <div class="hamster__body">
-                    <div class="hamster__head">
-                        <div class="hamster__ear"></div>
-                        <div class="hamster__eye"></div>
-                        <div class="hamster__nose"></div>
-                    </div>
-                    <div class="hamster__limb hamster__limb--fr"></div>
-                    <div class="hamster__limb hamster__limb--fl"></div>
-                    <div class="hamster__limb hamster__limb--br"></div>
-                    <div class="hamster__limb hamster__limb--bl"></div>
-                    <div class="hamster__tail"></div>
-                </div>
-            </div> 
-             <div class="spoke"></div>
+      <!-- <div id="hamster-loading"> -->
+
+      <div
+        aria-label="Orange and tan hamster running in a metal wheel"
+        role="img"
+        class="wheel-and-hamster"
+      >
+        <div class="wheel"></div>
+        <div class="hamster">
+          <div class="hamster__body">
+            <div class="hamster__head">
+              <div class="hamster__ear"></div>
+              <div class="hamster__eye"></div>
+              <div class="hamster__nose"></div>
+            </div>
+            <div class="hamster__limb hamster__limb--fr"></div>
+            <div class="hamster__limb hamster__limb--fl"></div>
+            <div class="hamster__limb hamster__limb--br"></div>
+            <div class="hamster__limb hamster__limb--bl"></div>
+            <div class="hamster__tail"></div>
+          </div>
+        </div>
+        <div class="spoke"></div>
         <!-- </div><div id="backgroud-container"></div> -->
-        <h2 class="loading-text"><span>L</span><span>O</span><span>A</span><span>D</span><span>I</span><span>N</span><span>G</span><span>.</span><span>.</span><span>.</span></h2>
-   </div>
+        <h2 class="loading-text">
+          <span>L</span><span>O</span><span>A</span><span>D</span><span>I</span
+          ><span>N</span><span>G</span><span>.</span><span>.</span
+          ><span>.</span>
+        </h2>
+      </div>
 
-
-        <div id="result-container"></div>
+      <div id="result-container"></div>
     </div>
     <div id="potentialBookTitles"></div>
     <div id="isbnPriceContainer"></div>
     <button id="downloadButton" class="upload-button">Download CSV</button>
     <script src="index.js" defer></script>
-</body>
+  </body>
 </html>
