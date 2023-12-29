@@ -78,7 +78,7 @@ const apiKEYGoogleBooks = "AIzaSyC0VxffVwhh-iT2mTauuIoFoIwMgx20hUU";
 
 const app = express();
 
-// app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 
 const port = 4006;
 
@@ -86,7 +86,7 @@ const port = 4006;
 
 //fetch(url: URL | RequestInfo, init?: RequestInit): Promise<Response>;
 
-app.get("/api/fetchbooks", async (req, res) => {
+app.get("/fetchbooks", async (req, res) => {
   try {
     const googleData = await axios.get(
       `${baseURL}/books/v1/volumes?q=intitle:"McGraw Hill Guide Writing for College"&key=${apiKEY}`
@@ -172,7 +172,7 @@ async function getBooksFromChatGPT(ocrText) {
 
 //This is my main function right now.
 
-app.post("/api/detectLabels", upload.single("image"), async (req, res) => {
+app.post("/detectLabels", upload.single("image"), async (req, res) => {
   let finalArryOfSetISBNS = "";
   if (!req.file) {
     console.log("No image provided.");
@@ -542,7 +542,7 @@ app.use(express.json());
 
 let storedFile; // This variable will hold the most recent file data
 
-app.post("/api/setMostRecentFile", (req, res) => {
+app.post("/setMostRecentFile", (req, res) => {
   storedFile = req.body.file;
   console.log("this is the stored file", storedFile);
   res.send(
@@ -564,7 +564,7 @@ app.post("/api/setMostRecentFile", (req, res) => {
 //   }
 // });
 
-app.get("/api/getMostRecentFile", (req, res) => {
+app.get("/getMostRecentFile", (req, res) => {
   if (storedFile) {
     // Convert the buffer data (character codes) to a string
     const fileContent = String.fromCharCode.apply(null, storedFile.data);
