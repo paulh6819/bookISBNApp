@@ -49,13 +49,21 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 const credentials = {
-  client_email: process.env.CLIENT_EMAIL,
+  type: "service_account",
+  project_id: "tokyo-hold-396302",
+  private_key_id: "2565a31bf3628fafe32d0b76f5fbf95957b37af4",
   private_key: process.env.PRIVATE_KEY,
+  client_email: process.env.CLIENT_EMAIL,
+  client_id: "107598203139965265258",
+  auth_uri: "https://accounts.google.com/o/oauth2/auth",
+  token_uri: "https://oauth2.googleapis.com/token",
+  auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+  client_x509_cert_url:
+    "https://www.googleapis.com/robot/v1/metadata/x509/paul-henderson%40tokyo-hold-396302.iam.gserviceaccount.com",
+  universe_domain: "googleapis.com",
 };
 
-const client = new ImageAnnotatorClient({
-  keyFilename: "./credentials.json",
-});
+const client = new ImageAnnotatorClient({ credentials: credentials });
 
 const baseURL = "https://www.googleapis.com";
 
