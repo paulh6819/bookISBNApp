@@ -30,7 +30,7 @@ import OpenAI from "openai";
 import { ImageAnnotatorClient } from "@google-cloud/vision";
 import dotenv from "dotenv";
 dotenv.config();
-console.log(process.env.CHAT_GPT_API_KEY);
+// console.log(process.env.CHAT_GPT_API_KEY);
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -162,11 +162,11 @@ async function getBooksFromChatGPT(ocrText) {
   for await (const part of stream) {
     responseContent += part.choices[0]?.delta?.content || "";
   }
-  console.log(
-    "this is chatgpt respnse",
-    responseContent,
-    "this is the end of the response content"
-  );
+  // console.log(
+  //   "this is chatgpt respnse",
+  //   responseContent,
+  //   "this is the end of the response content"
+  // );
   return responseContent;
 }
 
@@ -175,10 +175,10 @@ async function getBooksFromChatGPT(ocrText) {
 app.post("/detectLabels", upload.single("image"), async (req, res) => {
   let finalArryOfSetISBNS = "";
   if (!req.file) {
-    console.log("No image provided.");
+    // console.log("No image provided.");
     return res.status(400).send("No image uploaded.");
   }
-  console.log("Image received. Proceeding with label detection.");
+  // console.log("Image received. Proceeding with label detection.");
   // let booksrunData = await axios.get(
   //   `${baseBooksRunURL}${9781138790988}?key=${booksRunApiKey}`
   // );
@@ -226,7 +226,7 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
     // Assuming parsedGPTresponse is an array of objects where each object has a 'title' property.
     for (let bookOBJ of parsedGPTresponse) {
       if (bookOBJ.title) {
-        console.log(`This is a returned title from chatGPT: ${bookOBJ.title}`);
+        // console.log(`This is a returned title from chatGPT: ${bookOBJ.title}`);
         const constructedURL = `${baseURL}/books/v1/volumes?q=intitle:"${encodeURIComponent(
           bookOBJ.title
         )}"&key=${apiKEYGoogleBooks}`;
@@ -259,7 +259,7 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
 
             const firstAuthor =
               googleBooksResponse.data.items[0].volumeInfo.authors;
-            console.log("this is the first authorr", firstAuthor);
+            // console.log("this is the first authorr", firstAuthor);
 
             const firstPublisher =
               googleBooksResponse.data.items[0].volumeInfo.publisher;
@@ -270,8 +270,8 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
             const firstISBN =
               googleBooksResponse.data.items[0].volumeInfo.industryIdentifiers;
 
-            console.log("This is the first summary", firstItemDescription);
-            console.log("This is the first isbn", firstISBN);
+            // console.log("This is the first summary", firstItemDescription);
+            // console.log("This is the first isbn", firstISBN);
 
             //   if (firstItemThumbnail) {
             // Create an object that contains the title and the corresponding image
@@ -287,15 +287,15 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
 
             // Push the object into an array that will contain all results with images AND SUMMARY
             mappedBookToImageAndSummary.push(resultWithImage);
-            console.log(
-              "this is the result with image thats supposed to push broze age mindset",
-              resultWithImage
-            );
+            // console.log(
+            //   "this is the result with image thats supposed to push broze age mindset",
+            //   resultWithImage
+            // );
             // }
-            console.log(
-              "this is the complete obkect",
-              mappedBookToImageAndSummary
-            );
+            // console.log(
+            //   "this is the complete obkect",
+            //   mappedBookToImageAndSummary
+            // );
           }
         } catch (error) {
           console.error("Error fetching from Google Books API:", error);
@@ -308,13 +308,13 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
     //This brings back all the data from googles book API
     for (let bookOBJ of parsedGPTresponse) {
       if (bookOBJ.title) {
-        console.log(`This is a returned title from chatGPT: ${bookOBJ.title} `);
+        // console.log(`This is a returned title from chatGPT: ${bookOBJ.title} `);
       }
 
       const constructedURL = `${baseURL}/books/v1/volumes?q=intitle:"${encodeURIComponent(
         bookOBJ.title
       )}"&key=${apiKEYGoogleBooks}`;
-      console.log("Constructed URL:", constructedURL);
+      // console.log("Constructed URL:", constructedURL);
 
       const isbnsFromGoogleBooks = [];
 
@@ -332,20 +332,20 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
         ) {
           googleBooksResponse.data.items.forEach((item) => {
             temporaryBookImageArray.push(item.volumeInfo.imageLinks.thumbnail);
-            console.log(
-              "this is the tempoary book image array",
-              temporaryBookImageArray
-            );
+            // console.log(
+            //   "this is the tempoary book image array",
+            //   temporaryBookImageArray
+            // );
             if (
               item.volumeInfo.industryIdentifiers &&
               item.volumeInfo.industryIdentifiers.length > 0
             ) {
               item.volumeInfo.industryIdentifiers.forEach((identifier) => {
                 isbnsFromGoogleBooks.push(identifier.identifier);
-                console.log(
-                  "this is an identifier ISBN",
-                  identifier.identifier
-                );
+                // console.log(
+                //   "this is an identifier ISBN",
+                //   identifier.identifier
+                // );
               });
             }
             let firstBookImage = temporaryBookImageArray[0];
@@ -357,10 +357,10 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
               arrayOfEachBookImage.push(item.volumeInfo.imageLinks.thumbnail);
             }
             try {
-              console.log(
-                "this is the array of EachBook",
-                arrayOfEachBookImage
-              );
+              // console.log(
+              //   "this is the array of EachBook",
+              //   arrayOfEachBookImage
+              // );
             } catch (error) {
               "this array is not working", error;
             }
@@ -369,10 +369,10 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
             bookImages.push(firstResponseForBookImage);
             //  bookImages.push(firstResponseForBookImage);
             totalISBNS.push(isbnsFromGoogleBooks);
-            console.log(
-              "these are the isbns PERBOOK NEW NEW NEW",
-              isbnsFromGoogleBooks
-            );
+            // console.log(
+            //   "these are the isbns PERBOOK NEW NEW NEW",
+            //   isbnsFromGoogleBooks
+            // );
           });
           //bookImages.push(arrayOfEachBookImage);
           // console.log(bookImages);
@@ -387,9 +387,9 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
           console.error("Error fetching from Google Books API:", error.message);
         }
       }
-      console.log("here are the image URLS", bookImages);
-      console.log("this is the array of isbns per book", isbnsFromGoogleBooks);
-      console.log("these should be all the ISBNS", totalISBNS);
+      // console.log("here are the image URLS", bookImages);
+      // console.log("this is the array of isbns per book", isbnsFromGoogleBooks);
+      // console.log("these should be all the ISBNS", totalISBNS);
 
       const setOfIBNS = new Set();
       totalISBNS.forEach((isbnSubArray) => {
@@ -397,15 +397,15 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
           setOfIBNS.add(isbn);
         });
       });
-      console.log("this is the set of ISBNS", [...setOfIBNS]);
+      // console.log("this is the set of ISBNS", [...setOfIBNS]);
       finalArryOfSetISBNS = [...setOfIBNS];
-      console.log(
-        "this is the size of the finaly array of isBNS",
-        finalArryOfSetISBNS.length
-      );
-      finalArryOfSetISBNS.forEach((isbn) => {
-        console.log(isbn);
-      });
+      // console.log(
+      //   "this is the size of the finaly array of isBNS",
+      //   finalArryOfSetISBNS.length
+      // );
+      // finalArryOfSetISBNS.forEach((isbn) => {
+      //   console.log(isbn);
+      // });
     }
     //This is the array where I am storing the price obeject and isbns returned from books run
     //  let booksrunPrices = [];
@@ -480,9 +480,9 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
 
     // If you want to send back the result or some other response, you can do it here.
     // console.log("this is the final result!:", allResults);
-    console.log("this is the mappedBookTOimage", mappedBookToImageAndSummary);
-    console.log("this is the array of book images", totalArrayOfImages);
-    console.log("this is the allresults varible", allResults);
+    // console.log("this is the mappedBookTOimage", mappedBookToImageAndSummary);
+    // console.log("this is the array of book images", totalArrayOfImages);
+    // console.log("this is the allresults varible", allResults);
 
     // Spawn the Puppeteer script process---------------
     const isbnArgs = finalArryOfSetISBNS.join(",");
@@ -513,7 +513,7 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
           console.error(`exec error: ${error}`);
           return;
         }
-        console.log(`Python Output: ${stdout}`);
+        // console.log(`Python Output: ${stdout}`);
       }
     );
 
@@ -544,7 +544,7 @@ let storedFile; // This variable will hold the most recent file data
 
 app.post("/setMostRecentFile", (req, res) => {
   storedFile = req.body.file;
-  console.log("this is the stored file", storedFile);
+  // console.log("this is the stored file", storedFile);
   res.send(
     "File received from puppeteer containing book scouter prices and data"
   );
@@ -569,10 +569,10 @@ app.get("/getMostRecentFile", (req, res) => {
     // Convert the buffer data (character codes) to a string
     const fileContent = String.fromCharCode.apply(null, storedFile.data);
     res.json({ file: fileContent });
-    console.log(
-      "this is the converted buffer to jason string file",
-      fileContent
-    );
+    // console.log(
+    //   "this is the converted buffer to jason string file",
+    //   fileContent
+    // );
   } else {
     res.status(404).send("No file stored");
   }
@@ -752,5 +752,3 @@ app
 //     res.status(500).send("Error detecting labels.");
 //   }
 // });
-
-module.exports = app;
