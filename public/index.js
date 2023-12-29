@@ -5,7 +5,7 @@ let image = {
   message: "Let's see what these books are worth",
 };
 const resultsContainer = document.getElementById("result-container");
-console.log("hey");
+// console.log("hey");
 let isbnData;
 async function handleDrop(event) {
   event.preventDefault();
@@ -33,19 +33,19 @@ async function handleDrop(event) {
         pricePlaceHolder,
         arrayOfISBNs,
       } = await response.json();
-      console.log("This is my main object", result);
-      console.log("trying to get URLS here", bookUrls);
-      console.log("here are the mapped images", mappedImageAndSummary);
+      // console.log("This is my main object", result);
+      // console.log("trying to get URLS here", bookUrls);
+      // console.log("here are the mapped images", mappedImageAndSummary);
       // console.log(
       //   "here are the summarya",
       //   mappedImageAndSummary?.[0]?.summary ??
       //     "No summary availibe unfortunately"
       // );
-      console.log("this is the place holder", pricePlaceHolder);
-      console.log("these are the ISBNS", arrayOfISBNs);
+      // console.log("this is the place holder", pricePlaceHolder);
+      // console.log("these are the ISBNS", arrayOfISBNs);
       //console.log("this is ISBN", mappedImageAndSummary[0].ISBN[0].type);
       isbnData = arrayOfISBNs;
-      console.log(isbnData);
+      // console.log(isbnData);
       hideHamsterAndRemoveDim();
       showCSVButtonAfterPhotoIsDroppedAndThereIsData();
       mappedImageAndSummary.forEach((result) => {
@@ -182,7 +182,7 @@ async function handleDrop(event) {
 
     let csvContent = "data:text/csv;charset=utf-8,";
     csvContent += "isbn\n";
-    console.log("isbn infor the foreach", isbnData);
+    // console.log("isbn infor the foreach", isbnData);
     data.forEach((row) => {
       csvContent += row + "\n";
     });
@@ -269,11 +269,11 @@ async function handleDrop(event) {
           return response.json();
         })
         .then(async (data) => {
-          console.log(
-            "File data from the front end containing the CSV file:",
-            // JSON.stringify(data.file.data)
-            data
-          );
+          // console.log(
+          //   "File data from the front end containing the CSV file:",
+          //   // JSON.stringify(data.file.data)
+          //   data
+          // );
           displayFileData(data.file);
         })
         .catch((error) => {
@@ -311,11 +311,10 @@ function handleDragOver(event) {
 
 function handleFileSelect(event) {
   const file = event.target.files[0];
-  console.log("Selected file:", file);
+  // console.log("Selected file:", file);
 
   if (file && file.type.match(/^image\//)) {
     updateImage(URL.createObjectURL(file));
-    alert("TRICKED YOU!!! Just hacked all your data 😂😂😂 - Paul Henderson");
   } else {
     alert("Invalid file type. Please select an image file.");
   }
