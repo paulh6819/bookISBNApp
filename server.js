@@ -752,3 +752,5 @@ app
 //     res.status(500).send("Error detecting labels.");
 //   }
 // });
+
+module.exports = app;
