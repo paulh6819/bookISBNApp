@@ -19,7 +19,7 @@ async function handleDrop(event) {
     let formData = new FormData();
     formData.append("image", file);
 
-    let response = await fetch("/detectLabels", {
+    let response = await fetch("/api/detectLabels", {
       method: "POST",
       body: formData,
     });
