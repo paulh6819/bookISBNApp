@@ -80,7 +80,7 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, "public")));
 
-const port = 4006;
+const port = process.env.PORT || 4006;
 
 //const apiGoogleBooksKey = AIzaSyDklC7lbmUzVOIMCUMEhbas-WTu5AYG94c
 
