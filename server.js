@@ -52,7 +52,7 @@ const credentials = {
   type: "service_account",
   project_id: "tokyo-hold-396302",
   private_key_id: "2565a31bf3628fafe32d0b76f5fbf95957b37af4",
-  private_key: process.env.PRIVATE_KEY,
+  private_key: process.env.PRIVATE_KEY.replace(/\\n/g, "\n"),
   client_email: process.env.CLIENT_EMAIL,
   client_id: "107598203139965265258",
   auth_uri: "https://accounts.google.com/o/oauth2/auth",
@@ -175,7 +175,7 @@ async function getBooksFromChatGPT(ocrText) {
 app.post("/detectLabels", upload.single("image"), async (req, res) => {
   let finalArryOfSetISBNS = "";
   if (!req.file) {
-    // console.log("No image provided.");
+    console.log("No image provided.");
     return res.status(400).send("No image uploaded.");
   }
   // console.log("Image received. Proceeding with label detection.");
@@ -189,8 +189,10 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
   try {
     // Path to the photo at the root
     const buffer = req.file.buffer;
+    console.log("this is the buffer", buffer);
     const [result] = await client.textDetection(buffer);
     // console.log(
+    console.log(result, "this is the result from google vision");
     //   "THIS IS OCR RESULT OCR",
     //   result.textAnnotations[0].description
     // );
