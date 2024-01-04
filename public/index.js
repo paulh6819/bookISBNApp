@@ -14,6 +14,9 @@ async function handleDrop(event) {
   console.log("Dropped file:", file);
   showHamsterAndDimBackground();
 
+  const elementToHide = document.querySelector(".arrow");
+  elementToHide.style.display = "none";
+
   if (file && file.type.match(/^image\//)) {
     updateImage(URL.createObjectURL(file));
 
@@ -344,6 +347,8 @@ async function handleFileSelect(event) {
   const file = event.target.files[0];
   // console.log("Selected file:", file);
   showHamsterAndDimBackground();
+  const elementToHide = document.querySelector(".arrow");
+  elementToHide.style.display = "none";
 
   if (file && file.type.match(/^image\//)) {
     updateImage(URL.createObjectURL(file));
