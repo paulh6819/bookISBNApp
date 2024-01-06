@@ -99,6 +99,7 @@ async function handleDrop(event) {
         summaryElememnt.style.marginTop = "28px";
         summaryElememnt.style.textAlign = "left";
         summaryElememnt.style.marginRight = "25px";
+        summaryElememnt.style.marginBottom = "22px";
 
         summaryElememnt.style.textAlign = "left";
 
