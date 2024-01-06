@@ -306,7 +306,7 @@ details[open] summary ~ * {
 details[open] > summary {
   font-size: 25px; /* Larger size when open */
   font-weight: bold;
-  padding: 5px;
+  padding: 22px;
   text-align: left;
 }
 

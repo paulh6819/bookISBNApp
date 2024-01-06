@@ -73,9 +73,12 @@ async function handleDrop(event) {
           result?.author?.[0] ?? ""
         }`;
         authorsElement.style.textAlign = "left";
+        authorsElement.style.margin = "0px";
+        authorsElement.style.marginBottom = "7px";
 
         let publisherElemnt = document.createElement("p");
         publisherElemnt.style.textAlign = "left";
+        publisherElemnt.style.margin = "0px";
         publisherElemnt.style.marginBottom = "7px";
         publisherElemnt.innerHTML = `<span class="label">Publisher:</span> ${
           result?.publisher ?? ""
@@ -91,7 +94,12 @@ async function handleDrop(event) {
         const summaryElememnt = document.createElement("p");
         const imgElement = document.createElement("img"); // Create an actual img element
         imgElement.src = result.imageUrl; // Set the source of the image element
-        summaryElememnt.style.margin = "15px";
+        summaryElememnt.style.margin = "0px";
+        summaryElememnt.style.marginLeft = "0px";
+        summaryElememnt.style.marginTop = "28px";
+        summaryElememnt.style.textAlign = "left";
+        summaryElememnt.style.marginRight = "25px";
+
         summaryElememnt.style.textAlign = "left";
 
         imgElement.alt = ` `;
@@ -121,6 +129,8 @@ async function handleDrop(event) {
           ratingElement.innerHTML = `<span class="label">Rating:</span> ${result.rating}`;
           details.appendChild(ratingElement);
           ratingElement.style.textAlign = "left";
+          ratingElement.style.margin = "0px";
+          ratingElement.style.marginBottom = "7px";
         }
         details.appendChild(authorsElement);
 
@@ -424,7 +434,9 @@ async function handleFileSelect(event) {
         const summaryElememnt = document.createElement("p");
         const imgElement = document.createElement("img"); // Create an actual img element
         imgElement.src = result.imageUrl; // Set the source of the image element
-        summaryElememnt.style.margin = "15px";
+        summaryElememnt.style.margin = "0px";
+        summaryElememnt.style.marginLeft = "0px";
+        summaryElememnt.style.top = "28px";
         summaryElememnt.style.textAlign = "left";
 
         imgElement.alt = ` `;
