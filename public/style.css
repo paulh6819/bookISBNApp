@@ -315,7 +315,21 @@ details[open] > summary {
 .details-open{
   height: 200px;
 
+
 }
+
+
+/* this below is CSS for the bookcontainer info on mobile */
+@media screen and (max-width: 768px) { /* Adjust based on your mobile breakpoint */
+  .details-open {
+    display: none;
+  }
+
+  .book-container{
+    padding: 15px;
+  }
+}
+
 
 #drag-and-drop-text{
   font-size: 20px;
