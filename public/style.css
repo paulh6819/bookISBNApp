@@ -405,6 +405,7 @@ details[open] > summary {
    color: #000000; 
   text-decoration: none;
   margin: 5px 0;
+  text-align: left;
 }
 
 .footer-link:hover {
