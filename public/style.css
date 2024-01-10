@@ -27,12 +27,14 @@
     margin: 15px;
     padding: 0;
     text-align: left;
+    border-bottom: 1px solid #f1f0f0;
 
   }
   
   .menu li {
     display: inline-block;
     margin-right: 10px;
+    padding-bottom: 7px;
   }
   
   .menu a {
@@ -382,7 +384,7 @@ details[open] > summary {
   align-items: center; /* Vertically centers the content */
   font-family: "Futura", sans-serif;
   margin: 15px;
-  border-top: 2px solid #f1f0f0;
+  border-top: 1px solid #f1f0f0;
   
 }
 
