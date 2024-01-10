@@ -41,17 +41,17 @@
     font-weight: bold;
     padding: 8px 12px;
     border-radius: 4px;
-    transition: background-color 0.3s ease;
     box-shadow: 5px 5px 0px rgb(224, 125, 251);
-    border: 1px solid black
-  }
-  
-  .menu a:hover {
-    /* background-color: #f0f0f0; */
-    
+    border: 1px solid black;
+    transition: border-color 0.1s ease, box-shadow 0.3s ease, transform 0.3s ease; /* Include transform in the transition */
+    display: inline-block; /* or display: block; */
+}
+
+.menu a:hover {
     box-shadow: 0px 0px 0px rgb(171, 62, 62);
-    /* transition: background-color 0.3s ease; */
-  }
+    border-color: transparent;
+    transform: translateY(3px);
+}
   .menu-category::selection{
     color: rgb(240, 194, 203);
     font-size: 20px;
