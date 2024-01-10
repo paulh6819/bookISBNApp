@@ -6,6 +6,10 @@
     <title>Book Detector</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="hamster.css" />
+    <link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  rel="stylesheet"
+>
   </head>
   <body>
     <div class="App">
@@ -28,12 +32,12 @@
       </nav>
       
       <div class="center-container">
-        <h1>How much are the books worth in front of you?</h1>
-        <div
+          <h1>How much are the books worth in front of you?</h1>
+          <div
           class="drop-area"
           ondrop="handleDrop(event)"
           ondragover="handleDragOver(event)"
-        >
+          >
           <div class="animation-container">
             <div class="arrow"></div>
           </div>
@@ -52,27 +56,13 @@
             type="file"
             onchange="handleFileSelect(event)"
           />
-        </div>
+         </div>
+
+
+         <div id="result-container"></div>
+
       </div>
-      <!-- ;<div id="loadingIcon">
-            <div class="row">
-                <div class="colorSq"></div>
-                <div class="colorSq"></div>
-                <div class="colorSq"></div>
-            </div>
-            <div class="row">
-                <div class="colorSq"></div>
-                <div class="colorSq"></div>
-                <div class="colorSq"></div>
-            </div>
-            <div class="row">
-                <div class="colorSq"></div>
-                <div class="colorSq"></div>
-                <div class="colorSq"></div>
-            </div>
-            <p>...loading</p>
-          </div>  -->
-      <!-- <div id="hamster-loading"> -->
+    
 
       <div
         aria-label="Orange and tan hamster running in a metal wheel"
@@ -103,7 +93,7 @@
         </h2>
       </div>
 
-      <div id="result-container"></div>
+      
       <div class="footer">
         
         <div class="footer-content">
@@ -116,16 +106,17 @@
         <!-- Social Media Links -->
         <div class="social-links">
             <a href="https://www.instagram.com/yourusername" target="_blank" class="social-icon">
-                <i class="fab fa-instagram"></i>Instagram
+                <i class="fab fa-instagram"></i>
             </a>
             <a href="https://www.linkedin.com/in/yourusername" target="_blank" class="social-icon">
-                <i ></i>LinkedIn
+                <i  class="fab fa-linkedin"></i>
             </a>
             <a href="https://github.com/yourusername" target="_blank" class="social-icon">
-                <i class="fab fa-github"></i>GitHub
+                <i class="fab fa-github"></i>
             </a>
         </div>
     </div> 
+   
     </div>
     <div id="potentialBookTitles"></div>
     <div id="isbnPriceContainer"></div>
