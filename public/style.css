@@ -25,9 +25,10 @@
   .menu {
     list-style-type: none;
     margin: 15px;
-    padding: 0;
+    padding: 7px;
     text-align: left;
     border-bottom: 1px solid #f1f0f0;
+    opacity: 0.93;
 
   }
   
@@ -86,8 +87,15 @@
     padding: 20px 0;
     margin-top: 60px;
     padding-bottom: 40px; 
+    transition: border-color 0.1s ease, box-shadow 0.3s ease, transform 0.3s ease;
   }
   
+  .drop-area:hover{
+    
+    box-shadow: 0px 0px 0px rgb(150, 255, 134);
+    border-color: transparent;
+    transform:  translateX(3px) translateY(4px);
+  }
   
   
   .animation-container {
@@ -386,6 +394,7 @@ details[open] > summary {
  
   width: 100%;
   padding: 10px 0;
+  padding-left: 10px;
   display: flex;
   flex-direction: row;
   justify-content: space-between; /* Aligns content to both ends */
@@ -426,7 +435,7 @@ details[open] > summary {
 .social-icon:hover {
   box-shadow: 0px 0px 0px rgb(171, 62, 62);
   border-color: transparent;
-  transform: translateY(3px);
+  transform:  translateX(3px) translateY(4px);
 }
 
 .footer-content {
