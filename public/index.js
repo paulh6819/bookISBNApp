@@ -529,3 +529,28 @@ async function handleFileSelect(event) {
     );
   }
 }
+
+//below is the code for drag hover effect for the upload section
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Other initialization code here
+
+  const dropArea = document.getElementById("drop-area-javascript");
+
+  // Set up drag and drop listeners
+  dropArea.addEventListener("dragenter", function (event) {
+    dropArea.classList.add("drag-hover");
+  });
+
+  dropArea.addEventListener("dragleave", function (event) {
+    dropArea.classList.remove("drag-hover");
+  });
+
+  dropArea.addEventListener("drop", function (event) {
+    // Handle the drop event
+    dropArea.classList.remove("drag-hover");
+    // ... other drop handling code ...
+  });
+
+  // Any other code that needs to run after the DOM is fully loaded
+});
