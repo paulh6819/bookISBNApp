@@ -38,6 +38,7 @@
   }
   
   .menu a {
+    font-size: smaller;
     text-decoration: none;
     color: #333;
     font-weight: bold;
@@ -53,7 +54,7 @@
 .menu a:hover {
     box-shadow: 0px 0px 0px rgb(171, 62, 62);
     border-color: transparent;
-    transform: translateY(3px);
+    transform:  translateX(3px) translateY(4px);
 }
   .menu-category::selection{
     color: rgb(240, 194, 203);
@@ -155,17 +156,24 @@
   .upload-button {
     /* position: absolute; */
     /* top: 246px; */
-    background-color: red;
-    color: white;
+    
+    color: rgb(0, 0, 0);
     border-radius: 6px;
     padding: 10px 20px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     opacity: 0.72;
+    box-shadow: 5px 5px 0px rgb(224, 125, 251);
+    border: 1px solid black;
+    transition: border-color 0.1s ease, box-shadow 0.3s ease, transform 0.3s ease; /* Include transform in the transition */
+    display: inline-block; /* or display: block; */
+    opacity: 0.9;
   }
   
   .upload-button:hover {
-    background-color: darkred;
+    box-shadow: 0px 0px 0px rgb(171, 62, 62);
+    border-color: transparent;
+    transform:  translateX(3px) translateY(4px);
   }
   
   .image-preview img {
