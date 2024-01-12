@@ -404,7 +404,7 @@ details[open] > summary {
   position: relative;
   left: 0;
  
-  width: 100%;
+ 
   padding: 10px 0;
   padding-left: 10px;
   display: flex;
@@ -445,7 +445,7 @@ details[open] > summary {
 }
 
 .social-icon:hover {
-  box-shadow: 0px 0px 0px rgb(171, 62, 62);
+  box-shadow: 0px 0px 0px rgb(224, 125, 251);
   border-color: transparent;
   transform:  translateX(3px) translateY(4px);
 }
