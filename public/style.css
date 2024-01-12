@@ -481,4 +481,6 @@ details[open] > summary {
   display: flex;
   justify-content: center;
   gap: 8px;
+  margin-top: auto;
+  padding-bottom: 14px;
 }
