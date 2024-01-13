@@ -81,7 +81,7 @@
     /* position: relative; */
     width: 80%;
     height: 100%;
-    /* border: 2px dashed #666; */
+     border: 1px solid #0d0d0d; 
     border-radius: 11px;
     display: flex;
     justify-content: center;
@@ -97,7 +97,7 @@
   
   .drop-area:hover{
     
-    box-shadow: 0px 0px 0px rgb(150, 255, 134);
+    box-shadow: 0px 0px 0px rgb(150, 134, 255);
     border-color: transparent;
     transform:  translateX(3px) translateY(4px);
   }
@@ -334,6 +334,9 @@ font-family: Verdana, Geneva, Tahoma, sans-serif;
   width: 66%;
   box-shadow: 0px 0px 33px rgb(224 220 220);
   /* transform: translate(25%, -0%); */
+  /* opacity: 0;
+ transition: opacity 1s ease-in; */
+
 }
 
 .book-container-img{

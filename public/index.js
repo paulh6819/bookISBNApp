@@ -554,3 +554,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Any other code that needs to run after the DOM is fully loaded
 });
+
+//tranisition for the book container animarion
+
+// const books = document.querySelectorAll(".book-container");
+
+// books.forEach((book, i) => {
+//   setTimeout(() => {
+//     book.style.opacity = 1;
+//   }, 200 * i);
+// });
