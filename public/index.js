@@ -14,8 +14,10 @@ async function handleDrop(event) {
   console.log("Dropped file:", file);
   showHamsterAndDimBackground();
 
-  //below is the way I used to hide the arrow animation - keeping it incase I need to use it again tio hide the cloud
+  //below is the way I used to hide the arrow animation - keeping it incase I need to use it again tio hide the
+
   // const elementToHide = document.querySelector(".arrow");
+
   // elementToHide.style.display = "none";
 
   if (file && file.type.match(/^image\//)) {
