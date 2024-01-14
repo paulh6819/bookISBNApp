@@ -115,6 +115,7 @@
     width: 100px;
     height: 100px;
     opacity: .8;
+    
   }
   
   .arrow {
@@ -708,9 +709,10 @@ details[open] > summary {
 .arrow-container {
   position: absolute;
   top: 0;
-  left: 20px;
+  /* left: 20px; */
   width: 40px;
   height: 40px;
+  right: 10px;
 }
 
 [class*="icono"] {
