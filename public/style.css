@@ -79,6 +79,7 @@
   
   .drop-area {
     /* position: relative; */
+    position: relative;
     width: 80%;
     height: 100%;
     border: 1px solid #4f35382b;
@@ -93,7 +94,25 @@
     margin-top: 60px;
     padding-bottom: 40px; 
     transition: border-color 0.1s ease, box-shadow 0.3s ease, transform 0.3s ease;
+
   }
+  .drop-area::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 11px; /* Match the border-radius of .drop-area */
+    box-shadow: inset 0 0 5px rgba(40, 40, 40, 0); /* Initial state: no vignette */
+    transition: box-shadow 0.3s ease;
+    pointer-events: none; /* Prevents the pseudo-element from capturing mouse events */
+    opacity: 0.15;
+}
+
+.drop-area:hover::after {
+    box-shadow: inset 0 0 100px rgba(0,0,0,0.7); /* Creates the vignette effect */
+}
   
   .drop-area:hover{
     
@@ -101,6 +120,7 @@
     border-color: black;
     transform:  translateX(3px) translateY(4px);
     border: dotted 1px black;
+    background-color: #ffffff;
   }
 
   .drag-hover{
@@ -117,6 +137,8 @@
     width: 100px;
     height: 100px;
     opacity: .8;
+    top: -30px;
+    
     
   }
   
@@ -181,7 +203,7 @@
   }
   
   .upload-button {
-    /* position: absolute; */
+     position: relative; 
     /* top: 246px; */
     
     color: rgb(0, 0, 0);
@@ -195,6 +217,7 @@
     transition: border-color 0.1s ease, box-shadow 0.3s ease, transform 0.3s ease; /* Include transform in the transition */
     display: inline-block; /* or display: block; */
     opacity: 0.9;
+    bottom: -12px;
   }
   
   .upload-button:hover {
@@ -643,7 +666,7 @@ details[open] > summary {
   width: 3em;
   height: 3em;
   margin: 2em auto;
-  color: #DDD;
+  color: #e98686;
   background: #fff;
   border-width: 0.25em;
   border-style: solid;
