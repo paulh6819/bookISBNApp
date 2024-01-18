@@ -362,7 +362,7 @@ async function handleFileSelect(event) {
   // console.log("Selected file:", file);
   showHamsterAndDimBackground();
   const elementToHide = document.querySelector(".arrow");
-  elementToHide.style.display = "none";
+  // elementToHide.style.display = "none";
 
   if (file && file.type.match(/^image\//)) {
     updateImage(URL.createObjectURL(file));
