@@ -40,15 +40,16 @@
           id = "drop-area-javascript"
           >
           <p id="drag-and-drop-text">Drag and drop a photo here</p>
+          <img src="./book_drag_and_drop.png" alt="" class="drop-png">
           
-          <div class="animation-container">
+          <!-- <div class="animation-container"> -->
 
            
-            <div class="cloud">
+            <!-- <div class="cloud">
                 <div class="anim-block">
                   <div class="arrow-container  cloud-play"><i class="icono-arrow1-up"></i></div>
                 </div>
-              </div>
+              </div> -->
             <!-- <div class="arrow"></div> -->
           
           </div>
@@ -56,7 +57,10 @@
             <img id="droppedImage" />
             <p id="imageMessage"></p>
           </div>
-          <div class="upload-container">
+          
+         </div>
+
+         <div class="upload-container">
             
             <label class="upload-button" for="file-upload">
               Or click here to upload
@@ -67,9 +71,6 @@
             type="file"
             onchange="handleFileSelect(event)"
           />
-         </div>
-
-
          <div id="result-container"></div>
 
       </div>

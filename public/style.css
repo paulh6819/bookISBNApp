@@ -94,6 +94,7 @@
     margin-top: 60px;
     padding-bottom: 40px; 
     transition: border-color 0.1s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    border: dotted 4px black;
 
   }
   .drop-area::after {
@@ -107,11 +108,11 @@
     box-shadow: inset 0 0 5px rgba(40, 40, 40, 0); /* Initial state: no vignette */
     transition: box-shadow 0.3s ease;
     pointer-events: none; /* Prevents the pseudo-element from capturing mouse events */
-    opacity: 0.15;
+    opacity: 0.75;
 }
 
 .drop-area:hover::after {
-    box-shadow: inset 0 0 25px rgba(0,0,0,0.7); /* Creates the vignette effect */
+    box-shadow: inset 0 0 35px rgba(150, 134, 255, 0.7); /* Creates the vignette effect */
 }
   
   .drop-area:hover{
@@ -120,7 +121,7 @@
     border-color: black;
     transform:  translateX(3px) translateY(4px);
     border: dotted 2px black;
-    background-color: #ffffff;
+    background-color: rgba(150, 134, 255, 0.669);
   }
 
   .drag-hover{
@@ -180,6 +181,7 @@
     /* height: 60vh; */
     /* margin: auto; */
     flex-direction: column;
+    margin: -100px;
 
     
   }
@@ -195,7 +197,9 @@
 
   .upload-container {
     position: relative;
-  }
+    margin: -100px;
+    margin-top: -160px;
+}
 
   .upload-container p {
     position: relative;
@@ -829,4 +833,10 @@ details[open] > summary {
   100% {
     transform: translateY(-100%) scale(1, 1);
   }
+}
+
+
+.drop-png{
+  width: 25%;
+  margin: auto;
 }
