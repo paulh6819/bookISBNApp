@@ -16,10 +16,10 @@
 .App {
     font-family: "Futura", sans-serif;
     text-align: center;
-    min-height: 100vh; /* Ensure the App div takes at least the height of the viewport */
+    min-height: 90vh; /* Ensure the App div takes at least the height of the viewport */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     max-width: 1170px;
     margin: 0 auto;
     
@@ -240,14 +240,18 @@ menu a:hover {
   }
   
   .image-preview img {
-    height: auto;
+    height: 100%;
     width: 100%;
-    /* position: absolute; */
-    /* top: -100px; */
-    /* left: 0px; */
+    position: absolute;
+    top: 0;
+    left: 0;
     border: none;
     opacity: 0;
-  }
+    z-index: 1; /* ensures the image is above other content */
+    object-fit: cover;
+   
+    
+}
   
   .image-preview img[src] {
     opacity: .85;
