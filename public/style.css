@@ -113,7 +113,7 @@ menu a:hover {
     margin-top: 60px;
     /* padding-bottom: 40px;  */
     transition: border-color 0.1s ease, box-shadow 0.3s ease, transform 0.3s ease;
-    border: dotted 4px black;
+    border: dotted 5px black;
     
 
   }
@@ -129,6 +129,7 @@ menu a:hover {
     transition: box-shadow 0.3s ease;
     pointer-events: none; /* Prevents the pseudo-element from capturing mouse events */
     opacity: 0.75;
+    
 }
 
 .drop-area:hover::after {
@@ -140,8 +141,9 @@ menu a:hover {
     box-shadow: 0px 0px 0px rgb(150, 134, 255);
     border-color: black;
     transform:  translateX(3px) translateY(4px);
-    border: dotted 2px black;
-    background-color: rgba(156, 140, 255, 0.669);
+    border: dotted 8px black;
+    background-color: rgba(156, 140, 255, 0.469);
+   
    
  
   }
@@ -874,4 +876,32 @@ details[open] > summary {
 .drop-png{
   width: 25%;
   margin: auto;
+}
+
+.arrow-png {
+opacity: 0.8;
+}
+
+
+.arrow-png#top-left {
+  z-index: 100;
+  background: transparent;
+  width: 30px;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  border-radius: 3px;
+}
+
+
+
+.arrow-png#top-right {
+  z-index: 100;
+  background: transparent;
+  width: 30px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  border-radius: 3px;
+  transform: scaleX(-1);
 }
