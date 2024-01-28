@@ -1,5 +1,6 @@
 :root{
-  --gray: #7a7a7a;;
+  --gray: #7a7a7a;
+  --book-container-border:black;
 }
 
 /* ::selection {
@@ -396,11 +397,11 @@ font-family: Verdana, Geneva, Tahoma, sans-serif;
   border-radius: 4px;
   margin: 8px;
   width: 66%;
-  box-shadow: 0px 0px 33px rgb(224 220 220);
+  box-shadow: 5px 5px 0px  var(--book-container-border);
   /* transform: translate(25%, -0%); */
   /* opacity: 0;
  transition: opacity 1s ease-in; */
-
+  border: 1px solid  var(--book-container-border);
 }
 
 .book-container-img{
