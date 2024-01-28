@@ -38,7 +38,7 @@
     margin: 15px;
     padding: 7px;
     text-align: left;
-    border-bottom: 1px solid #f1f0f0;
+    border-bottom: 1px solid #d8d8d8;
     opacity: 0.93;
     display: flex;
 
@@ -136,8 +136,14 @@ menu a:hover {
     border-color: black;
     transform:  translateX(3px) translateY(4px);
     border: dotted 2px black;
-    background-color: rgba(150, 134, 255, 0.669);
+    background-color: rgba(156, 140, 255, 0.669);
+   
+ 
   }
+
+  /* .drop-area:hover #drag-and-drop-text{
+    font-size: 1.3em; 
+  } */
 
   .drag-hover{
     box-shadow: 0px 0px 0px rgb(150, 255, 134);
@@ -236,7 +242,7 @@ menu a:hover {
     cursor: pointer;
     transition: background-color 0.3s ease;
     opacity: 0.72;
-    box-shadow: 5px 5px 0px rgb(224, 125, 251);
+    box-shadow: 5px 5px 0px rgb(183 173 255);
     border: 1px solid black;
     transition: border-color 0.1s ease, box-shadow 0.3s ease, transform 0.3s ease; /* Include transform in the transition */
     display: inline-block; /* or display: block; */
