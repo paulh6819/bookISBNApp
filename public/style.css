@@ -42,6 +42,7 @@
     border-bottom: 1px solid #d8d8d8;
     opacity: 0.93;
     display: flex;
+    color:#353535
 
   }
   
@@ -54,7 +55,7 @@
   menu a {
     font-size: smaller;
     text-decoration: none;
-    color: #333;
+    color:#292828;
     font-weight: bold;
     padding: 8px 12px;
     border-radius: 4px;
@@ -78,6 +79,7 @@ menu a:hover {
 
  #login-button{
   margin-left: auto;
+  color:#353535;
  }
   h1 {
     /* margin: 50px auto;
@@ -85,6 +87,8 @@ menu a:hover {
     margin: 0;
     /* width: 90%; */
     max-width: 20ch;
+    color:#353535;
+    
   }
 
   .droppedImage{
