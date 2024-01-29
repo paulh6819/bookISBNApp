@@ -15,18 +15,18 @@
 
 
 .App {
-  font-family: "Futura", sans-serif;
-  text-align: center;
-  min-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  max-width: 1170px;
-  margin: 0 auto;
-  background-color: #544d9a05;
-  box-shadow: 6px 6px 0px rgb(1 215 224 / 57%);
-  border-radius: 4px;
-  border: 2px solid #393939;
+      font-family: "Futura", sans-serif;
+    text-align: center;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    max-width: 1170px;
+    margin: 0 auto;
+    background-color: #544d9a05;
+    box-shadow: 6px 6px 0px rgb(1 215 224 / 57%);
+    border-radius: 4px;
+    border: 2px solid #393939;
     
   }
   
@@ -115,6 +115,16 @@ menu a:hover {
     /* padding-bottom: 40px;  */
     transition: border-color 0.1s ease, box-shadow 0.3s ease, transform 0.3s ease;
     border: dotted 5px black;
+
+    /* new code from old drop box */
+    box-shadow: 0px 0px 0px rgb(150, 134, 255);
+    border-color: black;
+    transform:  translateX(3px) translateY(4px);
+    border: dotted 8px black;
+    background-color: rgba(156, 140, 255, 0.469);
+    /* new code from old drop box */
+   
+   
     
 
   }
@@ -143,7 +153,7 @@ menu a:hover {
     border-color: black;
     transform:  translateX(3px) translateY(4px);
     border: dotted 8px black;
-    background-color: rgba(156, 140, 255, 0.469);
+    background-color: rgba(91, 74, 197, 0.469);
    
    
  
@@ -884,7 +894,7 @@ details[open] > summary {
 }
 
 .arrow-png {
-opacity: 0.8;
+opacity: 0.7;
 }
 
 
@@ -908,5 +918,15 @@ opacity: 0.8;
   right: 10px;
   top: 10px;
   border-radius: 3px;
+  
+}
+
+.mirrored {
   transform: scaleX(-1);
+  background-color: #000000;
+}
+
+#top-right.mirrored {
+  transform: scaleX(-1);
+  background-color: #000000;
 }

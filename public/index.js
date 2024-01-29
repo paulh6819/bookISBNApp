@@ -567,3 +567,48 @@ document.addEventListener("DOMContentLoaded", function () {
 //     book.style.opacity = 1;
 //   }, 200 * i);
 // });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const dropArea = document.querySelector(".drop-area"); // Target the drop-area class
+  const topLeftArrow = document.getElementById("top-left");
+  const topRightArrow = document.getElementById("top-right");
+
+  // Animation for hovering over the drop area
+  dropArea.addEventListener("mouseenter", () => {
+    anime({
+      targets: topLeftArrow,
+      translateX: 6, // Adjust the value as needed
+      translateY: 6, // Adjust the value as needed
+      duration: 300,
+      easing: "easeInOutQuad",
+    });
+    anime({
+      targets: topRightArrow,
+      translateX: -6, // Adjust the value as needed
+      translateY: 6, // Adjust the value as needed
+      duration: 300,
+
+      easing: "easeInOutQuad",
+    });
+  });
+
+  // Reset animation when not hovering
+  dropArea.addEventListener("mouseleave", () => {
+    anime({
+      targets: topLeftArrow,
+      translateX: 0,
+      translateY: 0,
+      duration: 500,
+
+      easing: "easeInOutQuad",
+    });
+    anime({
+      targets: topRightArrow,
+      translateX: 0,
+      translateY: 0,
+      duration: 500,
+
+      easing: "easeInOutQuad",
+    });
+  });
+});
