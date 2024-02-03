@@ -161,6 +161,24 @@ async function handleDrop(event) {
             imgElement.classList.remove("details-open");
           }
         });
+        //this creates the x out button in the UI
+        const closeButton = document.createElement("span");
+        closeButton.innerHTML = "&times;";
+        closeButton.classList.add("close-btn");
+        closeButton.style.position = "relative";
+        closeButton.style.top = "10px";
+        closeButton.style.right = "10px";
+        closeButton.style.cursor = "pointer";
+        closeButton.style.fontSize = "20px";
+        closeButton.style.fontWeight = "bold";
+        closeButton.style.border = "1px solid black";
+        closeButton.style.borderRadius = "4px";
+
+        // Append close button to the bookContainer
+        bookContainer.appendChild(closeButton);
+        closeButton.addEventListener("click", function () {
+          this.parentElement.remove(); // Removes the book container
+        });
       });
 
       //below is the code for showing all the book covers
@@ -572,22 +590,37 @@ document.addEventListener("DOMContentLoaded", function () {
   const dropArea = document.querySelector(".drop-area"); // Target the drop-area class
   const topLeftArrow = document.getElementById("top-left");
   const topRightArrow = document.getElementById("top-right");
+  const bottomLeftArrow = document.getElementById("bottom-left");
+  const bottomRightArrow = document.getElementById("bottom-right");
 
   // Animation for hovering over the drop area
   dropArea.addEventListener("mouseenter", () => {
     anime({
       targets: topLeftArrow,
-      translateX: 6, // Adjust the value as needed
-      translateY: 6, // Adjust the value as needed
+      translateX: 6,
+      translateY: 6,
       duration: 300,
       easing: "easeInOutQuad",
     });
     anime({
       targets: topRightArrow,
-      translateX: -6, // Adjust the value as needed
-      translateY: 6, // Adjust the value as needed
+      translateX: -6,
+      translateY: 6,
       duration: 300,
-
+      easing: "easeInOutQuad",
+    });
+    anime({
+      targets: bottomLeftArrow,
+      translateX: 6,
+      translateY: -6,
+      duration: 300,
+      easing: "easeInOutQuad",
+    });
+    anime({
+      targets: bottomRightArrow,
+      translateX: -6,
+      translateY: -6,
+      duration: 300,
       easing: "easeInOutQuad",
     });
   });
@@ -595,19 +628,17 @@ document.addEventListener("DOMContentLoaded", function () {
   // Reset animation when not hovering
   dropArea.addEventListener("mouseleave", () => {
     anime({
-      targets: topLeftArrow,
+      targets: [topLeftArrow, bottomLeftArrow],
       translateX: 0,
       translateY: 0,
       duration: 500,
-
       easing: "easeInOutQuad",
     });
     anime({
-      targets: topRightArrow,
+      targets: [topRightArrow, bottomRightArrow],
       translateX: 0,
       translateY: 0,
       duration: 500,
-
       easing: "easeInOutQuad",
     });
   });

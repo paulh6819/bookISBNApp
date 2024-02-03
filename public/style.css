@@ -894,7 +894,7 @@ details[open] > summary {
 }
 
 .arrow-png {
-opacity: 0.7;
+opacity: 0.85;
 }
 
 
@@ -920,6 +920,28 @@ opacity: 0.7;
   border-radius: 3px;
   
 }
+
+.arrow-png#bottom-left {
+  z-index: 100;
+  background: transparent;
+  width: 30px;
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  border-radius: 3px;
+}
+
+.arrow-png#bottom-right {
+  z-index: 100;
+  background: transparent;
+  width: 30px;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  border-radius: 3px;
+}
+
+
 
 .mirrored {
   transform: scaleX(-1);
