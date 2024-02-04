@@ -167,18 +167,26 @@ async function handleDrop(event) {
         closeButton.classList.add("close-btn");
         closeButton.style.position = "relative";
         closeButton.style.top = "10px";
-        closeButton.style.right = "10px";
+        closeButton.style.right = "30px";
         closeButton.style.cursor = "pointer";
         closeButton.style.fontSize = "20px";
         closeButton.style.fontWeight = "bold";
-        closeButton.style.border = "1px solid black";
+
         closeButton.style.borderRadius = "4px";
 
         // Append close button to the bookContainer
-        bookContainer.appendChild(closeButton);
-        closeButton.addEventListener("click", function () {
-          this.parentElement.remove(); // Removes the book container
-        });
+
+        function setupCloseButton(button, container) {
+          button.addEventListener("click", function () {
+            container.remove(); // Removes the associated bookContainer
+            console.log(this);
+            this.remove(); // Removes the close button
+          });
+        }
+
+        resultsContainer.appendChild(closeButton);
+        // Use the setup function to associate the closeButton with the bookContainer
+        setupCloseButton(closeButton, bookContainer);
       });
 
       //below is the code for showing all the book covers
