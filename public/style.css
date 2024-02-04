@@ -477,7 +477,7 @@ details[open] > summary {
 #result-container{
   
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin-top: 40px;
   flex-wrap: wrap;
   width: 95%;
@@ -950,4 +950,17 @@ opacity: 0.85;
 #top-right.mirrored {
   transform: scaleX(-1);
   background-color: #000000;
+}
+
+
+.book-item {
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  opacity: 1;
+  transform: scale(1);
+  display: flex;
+}
+
+.fade-out {
+  opacity: 0;
+  transform: scale(0.95); /* Slightly shrink for visual effect */
 }

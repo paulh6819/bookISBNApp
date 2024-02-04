@@ -56,6 +56,9 @@ async function handleDrop(event) {
       hideHamsterAndRemoveDim();
       showCSVButtonAfterPhotoIsDroppedAndThereIsData();
       mappedImageAndSummary.forEach((result) => {
+        const bookItem = document.createElement("div");
+        bookItem.className = "book-item"; // This class will be used for Flexbox styling
+
         const bookContainer = document.createElement("div");
         bookContainer.className = "book-container";
         // bookContainer.style.border = "1px solid black";
@@ -152,8 +155,6 @@ async function handleDrop(event) {
         bookContainer.appendChild(details);
         // bookContainer.appendChild(test);
 
-        resultsContainer.appendChild(bookContainer);
-
         details.addEventListener("toggle", (event) => {
           if (event.newState === "open") {
             imgElement.classList.add("details-open");
@@ -175,18 +176,20 @@ async function handleDrop(event) {
         closeButton.style.borderRadius = "4px";
 
         // Append close button to the bookContainer
+        bookItem.appendChild(bookContainer);
+        bookItem.appendChild(closeButton);
 
-        function setupCloseButton(button, container) {
-          button.addEventListener("click", function () {
-            container.remove(); // Removes the associated bookContainer
-            console.log(this);
-            this.remove(); // Removes the close button
+        document.getElementById("result-container").appendChild(bookItem);
+
+        closeButton.addEventListener("click", function () {
+          // Apply fade-out effect before removal
+          bookItem.style.opacity = "0";
+          bookItem.addEventListener("transitionend", () => bookItem.remove(), {
+            once: true,
           });
-        }
+        });
 
-        resultsContainer.appendChild(closeButton);
         // Use the setup function to associate the closeButton with the bookContainer
-        setupCloseButton(closeButton, bookContainer);
       });
 
       //below is the code for showing all the book covers
