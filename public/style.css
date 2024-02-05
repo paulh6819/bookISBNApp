@@ -169,9 +169,11 @@ menu a:hover {
   .drag-hover{
     box-shadow: 0px 0px 0px rgb(150, 134, 255);
     border-color: black;
-    transform:  translateX(3px) translateY(4px);
-    border: dotted 8px black;
-    background-color: rgba(156, 140, 255, 0.469);
+    /* transform:  translateX(3px) translateY(4px); */
+   
+    background-color: rgba(91, 74, 197, 0.469);
+    border: dotted 11px black; /* Increase border size on hover */
+    transform: scale(1.01); /* Slightly scale up the drop area */
    
    
 
@@ -423,7 +425,11 @@ font-family: Verdana, Geneva, Tahoma, sans-serif;
   border-radius: 4px;
   margin: 8px;
   width: 90%;
-  box-shadow: 6px 6px 0px rgb(1 38 224 / 40%);
+  box-shadow: 6px 8px 0px rgb(1 38 224 / 40%);
+  border: 1px solid #000000b8;
+  border-top: 28px solid #00000014;
+  /* box-sizing: border-box; */
+  overflow: hidden;
   /* transform: translate(25%, -0%); */
   /* opacity: 0;
  transition: opacity 1s ease-in; */
