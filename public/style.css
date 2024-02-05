@@ -89,7 +89,7 @@ menu a:hover {
     /* width: 90%; */
     max-width: 20ch;
     color:#353535;
-    
+    padding: 41px;
   }
 
   .droppedImage{
@@ -425,15 +425,16 @@ font-family: Verdana, Geneva, Tahoma, sans-serif;
   border-radius: 4px;
   margin: 8px;
   width: 90%;
-  box-shadow: 6px 8px 0px rgb(1 38 224 / 40%);
-  border: 1px solid #000000b8;
-  border-top: 28px solid #00000014;
+ 
   /* box-sizing: border-box; */
   overflow: hidden;
   /* transform: translate(25%, -0%); */
   /* opacity: 0;
- transition: opacity 1s ease-in; */
+  transition: opacity 1s ease-in; */
   /* border: 1px solid  var(--book-container-border); */
+  box-shadow: 6px 8px 0px rgb(1 38 224 / 20%);
+  border: 1px solid #00000057;
+  border-top: 28px solid #00000014;
 }
 
 .book-container-img{
