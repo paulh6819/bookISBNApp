@@ -423,7 +423,7 @@ font-family: Verdana, Geneva, Tahoma, sans-serif;
   align-items: center;
   gap: 20px;
   border-radius: 4px;
-  margin: 8px;
+
   width: 90%;
  
   /* box-sizing: border-box; */
@@ -432,9 +432,20 @@ font-family: Verdana, Geneva, Tahoma, sans-serif;
   /* opacity: 0;
   transition: opacity 1s ease-in; */
   /* border: 1px solid  var(--book-container-border); */
-  box-shadow: 6px 8px 0px rgb(1 38 224 / 20%);
-  border: 1px solid #00000057;
-  border-top: 28px solid #00000014;
+
+
+
+
+ 
+  gap: 20px;
+ 
+  margin: 6px;
+  width: 90%;
+ 
+  box-shadow: 6px 6px 0px rgb(1 38 224 / 40%);
+  /* transform: translate(25%, -0%); */
+ 
+  border: 1px solid #2545b680;
 }
 
 .book-container-img{
