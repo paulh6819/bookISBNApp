@@ -3,6 +3,11 @@
   --book-container-border:    box-shadow: 5px 5px 2px #b3e4ff;;
 }
 
+@font-face {
+  font-family: 'Kalinga';
+  src: url('fonts/kalingab.ttf') format('truetype'); /* Adjust the path as necessary */
+}
+
 /* ::selection {
   background: black;
   color: red;
@@ -83,6 +88,7 @@ menu a:hover {
   color:#353535;
  }
   h1 {
+    font-family: 'Kalinga', sans-serif; /* Fallback to sans-serif if custom font fails to load */
     /* margin: 50px auto;
     margin-bottom: 40px; */
     margin: 0;
