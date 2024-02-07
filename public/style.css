@@ -88,7 +88,7 @@ menu a:hover {
   color:#353535;
  }
   h1 {
-    font-family: 'Kalinga', sans-serif; /* Fallback to sans-serif if custom font fails to load */
+    /* font-family: 'Kalinga', sans-serif; Fallback to sans-serif if custom font fails to load */
     /* margin: 50px auto;
     margin-bottom: 40px; */
     margin: 0;
