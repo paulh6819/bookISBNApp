@@ -217,6 +217,11 @@ async function handleDrop(event) {
       // isbToPriceMapDisplay(isbToPriceMap ?? {});
     } else {
       console.log("failed to process image of OCR");
+      alert(
+        "Failed to process the OCR image. The page will refresh for another attempt."
+      );
+      // Refresh the page to allow the user to try again
+      window.location.reload();
     }
   } else {
     alert("Invalid file type. Please drop an image file.");
@@ -304,7 +309,8 @@ async function handleDrop(event) {
   }
 
   function fetchFileData() {
-    const maxAttempts = 1000;
+    //If I go back to my pupeteer code I will have to make maxAttempts go back to 1000.
+    const maxAttempts = 1;
     let attempts = 0;
 
     function attemptFetch() {
