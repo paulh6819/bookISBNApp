@@ -603,60 +603,60 @@ document.addEventListener("DOMContentLoaded", function () {
 //   }, 200 * i);
 // });
 
-document.addEventListener("DOMContentLoaded", function () {
-  const dropArea = document.querySelector(".drop-area"); // Target the drop-area class
-  const topLeftArrow = document.getElementById("top-left");
-  const topRightArrow = document.getElementById("top-right");
-  const bottomLeftArrow = document.getElementById("bottom-left");
-  const bottomRightArrow = document.getElementById("bottom-right");
+// document.addEventListener("DOMContentLoaded", function () {
+//   const dropArea = document.querySelector(".drop-area"); // Target the drop-area class
+//   const topLeftArrow = document.getElementById("top-left");
+//   const topRightArrow = document.getElementById("top-right");
+//   const bottomLeftArrow = document.getElementById("bottom-left");
+//   const bottomRightArrow = document.getElementById("bottom-right");
 
-  // Animation for hovering over the drop area
-  dropArea.addEventListener("mouseenter", () => {
-    anime({
-      targets: topLeftArrow,
-      translateX: 6,
-      translateY: 6,
-      duration: 300,
-      easing: "easeInOutQuad",
-    });
-    anime({
-      targets: topRightArrow,
-      translateX: -6,
-      translateY: 6,
-      duration: 300,
-      easing: "easeInOutQuad",
-    });
-    anime({
-      targets: bottomLeftArrow,
-      translateX: 6,
-      translateY: -6,
-      duration: 300,
-      easing: "easeInOutQuad",
-    });
-    anime({
-      targets: bottomRightArrow,
-      translateX: -6,
-      translateY: -6,
-      duration: 300,
-      easing: "easeInOutQuad",
-    });
-  });
+//   // Animation for hovering over the drop area
+//   dropArea.addEventListener("mouseenter", () => {
+//     anime({
+//       targets: topLeftArrow,
+//       translateX: 6,
+//       translateY: 6,
+//       duration: 300,
+//       easing: "easeInOutQuad",
+//     });
+//     anime({
+//       targets: topRightArrow,
+//       translateX: -6,
+//       translateY: 6,
+//       duration: 300,
+//       easing: "easeInOutQuad",
+//     });
+//     anime({
+//       targets: bottomLeftArrow,
+//       translateX: 6,
+//       translateY: -6,
+//       duration: 300,
+//       easing: "easeInOutQuad",
+//     });
+//     anime({
+//       targets: bottomRightArrow,
+//       translateX: -6,
+//       translateY: -6,
+//       duration: 300,
+//       easing: "easeInOutQuad",
+//     });
+//   });
 
-  // Reset animation when not hovering
-  dropArea.addEventListener("mouseleave", () => {
-    anime({
-      targets: [topLeftArrow, bottomLeftArrow],
-      translateX: 0,
-      translateY: 0,
-      duration: 500,
-      easing: "easeInOutQuad",
-    });
-    anime({
-      targets: [topRightArrow, bottomRightArrow],
-      translateX: 0,
-      translateY: 0,
-      duration: 500,
-      easing: "easeInOutQuad",
-    });
-  });
-});
+//   // Reset animation when not hovering
+//   dropArea.addEventListener("mouseleave", () => {
+//     anime({
+//       targets: [topLeftArrow, bottomLeftArrow],
+//       translateX: 0,
+//       translateY: 0,
+//       duration: 500,
+//       easing: "easeInOutQuad",
+//     });
+//     anime({
+//       targets: [topRightArrow, bottomRightArrow],
+//       translateX: 0,
+//       translateY: 0,
+//       duration: 500,
+//       easing: "easeInOutQuad",
+//     });
+//   });
+// });
