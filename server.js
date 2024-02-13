@@ -86,55 +86,6 @@ const port = process.env.PORT || 4006;
 
 //fetch(url: URL | RequestInfo, init?: RequestInit): Promise<Response>;
 
-app.get("/fetchbooks", async (req, res) => {
-  try {
-    const googleData = await axios.get(
-      `${baseURL}/books/v1/volumes?q=intitle:"McGraw Hill Guide Writing for College"&key=${apiKEY}`
-    );
-
-    // Then, we extract the ISBN_13 as befores
-    let isbn13List = [];
-
-    if (googleData.data.items) {
-      for (const item of googleData.data.items) {
-        if (item.volumeInfo?.industryIdentifiers) {
-          for (const identifier of item.volumeInfo.industryIdentifiers) {
-            if (identifier.type === "ISBN_13") {
-              isbn13List.push(identifier.identifier);
-              break;
-            }
-          }
-        }
-      }
-    }
-
-    console.log("these are all the ISBNs", isbn13List);
-    let booksrunDataList2 = [];
-
-    for (const isbn13 of isbn13List) {
-      const booksrunData = await axios.get(
-        `${baseBooksRunURL}${isbn13}?key=${booksRunApiKey}`
-      );
-
-      booksrunDataList.push(booksrunData.data);
-    }
-
-    if (isbn13) {
-      booksrunData = await axios.get(
-        `${baseBooksRunURL}${isbn13}?key=${booksRunApiKey}`
-      );
-    }
-
-    res.json({
-      googleData: isbn13List, // Changed this line
-      booksRunData: booksrunDataList2,
-    });
-  } catch (error) {
-    console.error("error fetching data", error);
-    res.status(500).send("internal server error");
-  }
-});
-
 ///   The function below returns the response from chatGPT
 
 async function getBooksFromChatGPT(ocrText) {
