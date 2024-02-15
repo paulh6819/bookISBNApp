@@ -39,8 +39,6 @@ const __dirname = dirname(__filename);
 const openai = new OpenAI({
   apiKey: process.env.CHAT_GPT_API_KEY, // defaults to process.env["OPENAI_API_KEY"]
 });
-const priceApiKey =
-  "TZSVHHOSXBXVRLXRDXXMIEFOXWZUOZVIGZZGJAWCDNRGKNEHQKRRSMDJOLJURSWI";
 
 // const CHAT_API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
 // const chatGPTApiKey = process.env.CHAT_GPT_API_KEY;
@@ -67,13 +65,6 @@ const client = new ImageAnnotatorClient({ credentials: credentials });
 
 const baseURL = "https://www.googleapis.com";
 
-const baseBooksRunURL = "https://booksrun.com/api/price/sell/";
-
-const baseBooksRunURLBuying = "https://booksrun.com/api/v3/price/buy/";
-
-//sometimes this key will randomly expire. must be cognizant of the issue, and think of a solution.
-const booksRunApiKey = "p83zv395qxgyr2mj7xsn";
-
 const apiKEYGoogleBooks = "AIzaSyC0VxffVwhh-iT2mTauuIoFoIwMgx20hUU";
 
 const app = express();
@@ -81,8 +72,6 @@ const app = express();
 app.use(express.static(path.join(__dirname, "public")));
 
 const port = process.env.PORT || 4006;
-
-//const apiGoogleBooksKey = AIzaSyDklC7lbmUzVOIMCUMEhbas-WTu5AYG94c
 
 //fetch(url: URL | RequestInfo, init?: RequestInit): Promise<Response>;
 
