@@ -40,6 +40,11 @@ const openai = new OpenAI({
   apiKey: process.env.CHAT_GPT_API_KEY, // defaults to process.env["OPENAI_API_KEY"]
 });
 
+// import { apiKeys } from "./config/env.config";
+import googleOcrObject from "./config/env.config.js";
+
+import { type } from "os";
+
 // const CHAT_API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
 // const chatGPTApiKey = process.env.CHAT_GPT_API_KEY;
 
@@ -47,20 +52,19 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 const credentials = {
-  type: "service_account",
-  project_id: "tokyo-hold-396302",
-  private_key_id: "2565a31bf3628fafe32d0b76f5fbf95957b37af4",
-  private_key: process.env.PRIVATE_KEY.replace(/\\n/g, "\n"),
-  client_email: process.env.CLIENT_EMAIL,
-  client_id: "107598203139965265258",
-  auth_uri: "https://accounts.google.com/o/oauth2/auth",
-  token_uri: "https://oauth2.googleapis.com/token",
-  auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
-  client_x509_cert_url:
-    "https://www.googleapis.com/robot/v1/metadata/x509/paul-henderson%40tokyo-hold-396302.iam.gserviceaccount.com",
-  universe_domain: "googleapis.com",
+  type: googleOcrObject.type,
+  project_id: googleOcrObject.project_id,
+  private_key_id: googleOcrObject.private_key_id,
+  private_key: googleOcrObject.private_key,
+  client_email: googleOcrObject,
+  client_id: googleOcrObject.client_id,
+  auth_uri: googleOcrObject.auth_uri,
+  token_uri: googleOcrObject.token_uri,
+  auth_provider_x509_cert_url: googleOcrObject.auth_provider_x509_cert_url,
+  client_x509_cert_url: googleOcrObject.client_x509_cert_url,
+  universe_domain: googleOcrObject.universe_domain,
 };
-
+console.dir(credentials);
 const client = new ImageAnnotatorClient({ credentials: credentials });
 
 const baseURL = "https://www.googleapis.com";
