@@ -19,6 +19,9 @@
 //10. learn the basics of websockets on a seperate little practice page or app
 
 //11. I need to get the websocket concept understood because my app brings back all the infomation if the user can click for more info
+import dotenv from "dotenv";
+dotenv.config();
+console.log("testing the env", process.env.PRIVATE_KEY);
 
 import { spawn } from "child_process";
 
@@ -28,8 +31,7 @@ import axios from "axios";
 import multer from "multer";
 import OpenAI from "openai";
 import { ImageAnnotatorClient } from "@google-cloud/vision";
-import dotenv from "dotenv";
-dotenv.config();
+
 // console.log(process.env.CHAT_GPT_API_KEY);
 import path from "path";
 import { fileURLToPath } from "url";
@@ -43,6 +45,8 @@ const openai = new OpenAI({
 // import { apiKeys } from "./config/env.config";
 import googleOcrObject from "./config/env.config.js";
 
+console.log("this is the api imports", googleOcrObject);
+
 import { type } from "os";
 
 // const CHAT_API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
@@ -51,20 +55,36 @@ import { type } from "os";
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
+// const credentials = {
+//   type: googleOcrObject.type,
+//   project_id: googleOcrObject.project_id,
+//   private_key_id: googleOcrObject.private_key_id,
+//   private_key: googleOcrObject.private_key,
+//   client_email: googleOcrObject,
+//   client_id: googleOcrObject.client_id,
+//   auth_uri: googleOcrObject.auth_uri,
+//   token_uri: googleOcrObject.token_uri,
+//   auth_provider_x509_cert_url: googleOcrObject.auth_provider_x509_cert_url,
+//   client_x509_cert_url: googleOcrObject.client_x509_cert_url,
+//   universe_domain: googleOcrObject.universe_domain,
+// };
+
 const credentials = {
-  type: googleOcrObject.type,
-  project_id: googleOcrObject.project_id,
-  private_key_id: googleOcrObject.private_key_id,
-  private_key: googleOcrObject.private_key,
-  client_email: googleOcrObject,
-  client_id: googleOcrObject.client_id,
-  auth_uri: googleOcrObject.auth_uri,
-  token_uri: googleOcrObject.token_uri,
-  auth_provider_x509_cert_url: googleOcrObject.auth_provider_x509_cert_url,
-  client_x509_cert_url: googleOcrObject.client_x509_cert_url,
-  universe_domain: googleOcrObject.universe_domain,
+  type: process.env.TYPE,
+  project_id: process.env.PROJECT_ID,
+  private_key_id: process.env.PRIVATE_KEY_ID,
+  private_key: process.env.PRIVATE_KEY.replace(/\\n/g, "\n"),
+  client_email: process.env.CLIENT_EMAIL,
+  client_id: process.env.CLIENT_ID,
+  auth_uri: process.env.AUTH_URI,
+  token_uri: process.env.TOKEN_URI,
+  auth_provider_x509_cert_url: process.env.AUTH_PROVIDER_X509_CERT_URL,
+  client_x509_cert_url: process.env.CLIENT_X509_CERT_URL,
+  universe_domain: process.env.UNIVERSE_DOMAIN,
 };
+
 console.dir(credentials);
+console.log("this is the google credentials object", credentials);
 const client = new ImageAnnotatorClient({ credentials: credentials });
 
 const baseURL = "https://www.googleapis.com";
