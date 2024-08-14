@@ -95,7 +95,7 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, "public")));
 
-const port = process.env.PORT || 4006;
+const port = process.env.PORT || 4009;
 
 //fetch(url: URL | RequestInfo, init?: RequestInit): Promise<Response>;
 
