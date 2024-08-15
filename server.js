@@ -135,7 +135,7 @@ async function getBooksFromChatGPT(ocrText) {
 }
 
 //This is my main function right now.
-
+let imageToGoToVisionAPI;
 app.post("/detectLabels", upload.single("image"), async (req, res) => {
   let finalArryOfSetISBNS = "";
   if (!req.file) {
@@ -154,6 +154,7 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
     // Path to the photo at the root
     const buffer = req.file.buffer;
     console.log("this is the buffer", buffer);
+    descriptionFromChatGPTAboutDropedImage(buffer);
     const [result] = await client.textDetection(buffer);
     // console.log(
     console.log(result, "this is the result from google vision");
@@ -269,6 +270,7 @@ app.post("/detectLabels", upload.single("image"), async (req, res) => {
           return;
         }
       }
+      getImageToChatGPTToExamineTheFont(totalArrayOfImages);
     }
     let totalISBNS = [];
     //This brings back all the data from googles book API
@@ -718,3 +720,76 @@ app
 //     res.status(500).send("Error detecting labels.");
 //   }
 // });
+
+function getImageToChatGPTToExamineTheFont(arr) {
+  if (arr.length > 0) {
+    // Assuming the first item is a buffer or a string
+    const base64Encoded = Buffer.from(arr[0]).toString("base64");
+    console.log("here is base64", base64Encoded);
+    // You can now send this base64Encoded string to your API
+
+    async function main() {
+      const response = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: "What’s in this image? and what color is it? and whats the font?",
+              },
+              {
+                type: "image_url",
+                image_url: {
+                  url: arr[0],
+                },
+              },
+            ],
+          },
+        ],
+      });
+      console.log(
+        "here is chat GPTs response to the book image",
+        response.choices[0]
+      );
+    }
+    main();
+  } else {
+    console.log("The array is empty");
+  }
+}
+function descriptionFromChatGPTAboutDropedImage(img) {
+  // Assuming the first item is a buffer or a string
+  const base64Image = Buffer.from(img).toString("base64");
+  console.log("here is base64", base64Image);
+  // You can now send this base64Encoded string to your API
+
+  async function main() {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "text",
+              text: "What’s in this image? and what color is it? and whats the font?",
+            },
+            {
+              type: "image_url",
+              image_url: {
+                url: `data:image/jpeg;base64,${base64Image}`,
+              },
+            },
+          ],
+        },
+      ],
+    });
+    console.log(
+      "here is chat GPTs response to the INITAL book image",
+      response.choices[0]
+    );
+  }
+  main();
+}
